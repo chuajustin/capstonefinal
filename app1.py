@@ -130,20 +130,39 @@ with tab1:
         if combined_data_list:
             final_combined_data = pd.concat(combined_data_list, axis=1)
             
-            # Plot combined data
-            fig_combined = px.line(final_combined_data, 
-                                   x=final_combined_data.index, 
-                                   y=final_combined_data.columns, 
-                                   title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                   labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            # Chart Type Selection
+            chart_type = st.selectbox('Select chart type:', ['Line', 'Bar', 'Scatter'], key='chart_type_selection_combined')
+            
+            # Chart rendering logic
+            if chart_type == 'Line':
+                fig_combined = px.line(final_combined_data, 
+                                       x=final_combined_data.index, 
+                                       y=final_combined_data.columns, 
+                                       title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
+                                       labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            elif chart_type == 'Bar':
+                fig_combined = px.bar(final_combined_data, 
+                                      x=final_combined_data.index, 
+                                      y=final_combined_data.columns, 
+                                      title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
+                                      labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            elif chart_type == 'Scatter':
+                fig_combined = px.scatter(final_combined_data, 
+                                          x=final_combined_data.index, 
+                                          y=final_combined_data.columns, 
+                                          title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
+                                          labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            
             st.plotly_chart(fig_combined)
     else:
-            fig_combined = px.line(final_combined_data, 
-                                   x=final_combined_data.index, 
-                                   y=final_combined_data.columns, 
-                                   title=f'{company} : Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                   labels={"index": "Year", "value": "Emissions (in metric tons)"})
-            st.plotly_chart(fig_combined)
+        # Default data display when no company selected
+        fig_combined = px.line(final_combined_data, 
+                               x=final_combined_data.index, 
+                               y=final_combined_data.columns, 
+                               title=f'{company} : Scopes 1, 2, and 3 (Original vs Predictions)', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
+        st.plotly_chart(fig_combined)
+
         
 # Individual Scope Charts Tab
 with tab2:
