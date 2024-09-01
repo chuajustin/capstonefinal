@@ -85,7 +85,7 @@ def combine_data(historical, prediction, label):
     return combined
 
 # Streamlit App
-st.title('PyCaret Time Series Carbon Emission Forecasts')
+st.title('Carbon Emission Predictor')
 
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
