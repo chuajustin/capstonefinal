@@ -163,7 +163,6 @@ with tab1:
                                labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_combined)
 
-        
 # Individual Scope Charts Tab
 with tab2:
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indiv')
@@ -182,17 +181,46 @@ with tab2:
         
         if not comparison_data.empty:
             st.subheader('Comparison of Selected Companies')
-            st.line_chart(comparison_data)
+            
+            # Chart Type Selection
+            chart_type = st.selectbox('Select chart type:', ['Line', 'Bar', 'Scatter'], key='chart_type_selection_indiv')
+            
+            if chart_type == 'Line':
+                st.line_chart(comparison_data)
+            elif chart_type == 'Bar':
+                st.bar_chart(comparison_data)
+            elif chart_type == 'Scatter':
+                fig = px.scatter(comparison_data)
+                st.plotly_chart(fig)
     else:
         for scope in model_names:
             st.subheader(f'{company} {scope} (Original vs Prediction)')
+            
             if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
-                fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
-                                    x=final_combined_data.index, 
-                                    y=[f'{scope} Original', f'{scope} Prediction'], 
-                                    title=f'{company} {scope} (Original vs Prediction)', 
-                                    labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                # Chart Type Selection
+                chart_type = st.selectbox(f'Select chart type for {scope}:', ['Line', 'Bar', 'Scatter'], key=f'chart_type_selection_{scope}')
+                
+                if chart_type == 'Line':
+                    fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
+                                        x=final_combined_data.index, 
+                                        y=[f'{scope} Original', f'{scope} Prediction'], 
+                                        title=f'{company} {scope} (Original vs Prediction)', 
+                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                elif chart_type == 'Bar':
+                    fig_scope = px.bar(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
+                                       x=final_combined_data.index, 
+                                       y=[f'{scope} Original', f'{scope} Prediction'], 
+                                       title=f'{company} {scope} (Original vs Prediction)', 
+                                       labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                elif chart_type == 'Scatter':
+                    fig_scope = px.scatter(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
+                                           x=final_combined_data.index, 
+                                           y=[f'{scope} Original', f'{scope} Prediction'], 
+                                           title=f'{company} {scope} (Original vs Prediction)', 
+                                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                
                 st.plotly_chart(fig_scope)
+
 
 # Emission Stats Table Tab
 with tab3:
