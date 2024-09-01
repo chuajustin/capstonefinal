@@ -12,41 +12,42 @@ Select a company and year to view forecasts and historical data.
 
 # Define model paths
 model_paths = {
-    "Meta Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\Meta\meta scope data files\Meta Scope1\meta_scope1_model',
-    "Meta Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\Meta\meta scope data files\Meta Scope1\meta_scope2_model',
-    "Meta Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\Meta\meta scope data files\Meta Scope1\meta_scope3_model',
-    "Fujitsu Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\fujitsu_scope1_model',
-    "Fujitsu Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\fujitsu_scope2_model',
-    "Fujitsu Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\fujitsu_scope3_model',
-    "Amazon Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\amazon_scope1_model',
-    "Amazon Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\amazon_scope2_model',
-    "Amazon Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\amazon_scope3_model',
-    "Google Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\google_scope1_model',
-    "Google Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\google_scope2_model',
-    "Google Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\google_scope3_model',
-    "Microsoft Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\microsoft_scope1_model',
-    "Microsoft Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\microsoft_scope2_model',
-    "Microsoft Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys pkl files\microsoft_scope3_model'
+    "Meta Scope 1": 'model/meta_scope1_model',
+    "Meta Scope 2": 'model/meta_scope2_model',
+    "Meta Scope 3": 'model/meta_scope3_model',
+    "Fujitsu Scope 1": 'model/fujitsu_scope1_model',
+    "Fujitsu Scope 2": 'model/fujitsu_scope2_model',
+    "Fujitsu Scope 3": 'model/fujitsu_scope3_model',
+    "Amazon Scope 1": 'model/amazon_scope1_model',
+    "Amazon Scope 2": 'model/amazon_scope2_model',
+    "Amazon Scope 3": 'model/amazon_scope3_model',
+    "Google Scope 1": 'model/google_scope1_model',
+    "Google Scope 2": 'model/google_scope2_model',
+    "Google Scope 3": 'model/google_scope3_model',
+    "Microsoft Scope 1": 'model/microsoft_scope1_model',
+    "Microsoft Scope 2": 'model/microsoft_scope2_model',
+    "Microsoft Scope 3": 'model/microsoft_scope3_model'
 }
 
 # Define historical data paths
 historical_data_paths = {
-    "Meta Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\Meta\meta scope data files\Meta Scope1\data set\meta_scope1.csv',
-    "Meta Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\Meta\meta scope data files\Meta Scope1\data set\meta_scope2.csv',
-    "Meta Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\Meta\meta scope data files\Meta Scope1\data set\meta_scope3.csv',
-    "Fujitsu Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\fujitsu_scope1.csv',
-    "Fujitsu Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\fujitsu_scope2.csv',
-    "Fujitsu Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\fujitsu_scope3.csv',
-    "Amazon Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\amazon_scope1.csv',
-    "Amazon Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\amazon_scope2.csv',
-    "Amazon Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\amazon_scope3.csv',
-    "Google Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\google_scope1.csv',
-    "Google Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\google_scope2.csv',
-    "Google Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\google_scope3.csv',
-    "Microsoft Scope 1": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\microsoft_scope1.csv',
-    "Microsoft Scope 2": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\microsoft_scope2.csv',
-    "Microsoft Scope 3": r'C:\Users\Justin\Desktop\GA - Data Analytics 24 Jun - 16 Sept 2024\Capstone Project\Datasets\All models\5 coys csv files\microsoft_scope3.csv'
+    "Meta Scope 1": 'data/meta_scope1.csv',
+    "Meta Scope 2": 'data/meta_scope2.csv',
+    "Meta Scope 3": 'data/meta_scope3.csv',
+    "Fujitsu Scope 1": 'data/fujitsu_scope1.csv',
+    "Fujitsu Scope 2": 'data/fujitsu_scope2.csv',
+    "Fujitsu Scope 3": 'data/fujitsu_scope3.csv',
+    "Amazon Scope 1": 'data/amazon_scope1.csv',
+    "Amazon Scope 2": 'data/amazon_scope2.csv',
+    "Amazon Scope 3": 'data/amazon_scope3.csv',
+    "Google Scope 1": 'data/google_scope1.csv',
+    "Google Scope 2": 'data/google_scope2.csv',
+    "Google Scope 3": 'data/google_scope3.csv',
+    "Microsoft Scope 1": 'data/microsoft_scope1.csv',
+    "Microsoft Scope 2": 'data/microsoft_scope2.csv',
+    "Microsoft Scope 3": 'data/microsoft_scope3.csv'
 }
+
 
 # Load models
 def load_models(model_paths):
