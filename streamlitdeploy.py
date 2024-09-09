@@ -132,7 +132,7 @@ with tab1:
     fig_combined = px.line(final_combined_data, 
                            x=final_combined_data.index, 
                            y=final_combined_data.columns, 
-                           title=f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)', 
+                           title=f'Compare against {file_name} Original', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
     st.plotly_chart(fig_combined)
 
@@ -143,7 +143,7 @@ with tab2:
         fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
                             x=final_combined_data.index, 
                             y=[f'{scope} Original', f'{scope} Prediction'], 
-                            title=f'{company} {scope} (Original vs Prediction)', 
+                            title=f'Compare against {file_name} Original', 
                             labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_scope)
     
