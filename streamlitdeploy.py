@@ -118,21 +118,16 @@ if uploaded_file is not None:
     # Define forecasting horizon (e.g., predict the next 30 years)
     fh = 30
 
-    if model_scope_1 in models:
-        predictions_scope_1 = predict_model(models[model_scope_1], fh=fh)
-        combined_data_scope_1 = combine_data(user_data, predictions_scope_1.values.flatten(), model_scope_1, custom_name = original_label, uploaded_file=True)
-
-    if model_scope_2 in models:
-        predictions_scope_2 = predict_model(models[model_scope_2], fh=fh)
-        combined_data_scope_2 = combine_data(user_data, predictions_scope_2.values.flatten(), model_scope_2, custom_name = original_label, uploaded_file=True)
-
-    if model_scope_3 in models:
-        predictions_scope_3 = predict_model(models[model_scope_3], fh=fh)
-        combined_data_scope_3 = combine_data(user_data, predictions_scope_3.values.flatten(), model_scope_3, custom_name = original_label, uploaded_file=True)
+    for scope_num in range(1, 4):
+        model_name = f"{company} Scope {scope_num}"
+        if model_name in models:
+            predictions = predict_model(models[model_name], fh=fh)
+            combined_data = combine_data(user_data, predictions.values.flatten(), model_name, custom_name=original_label, uploaded_file=True)
+            combined_data_list.append(combined_data)
 
     # Combine all scopes into a single DataFrame for plotting
-    final_combined_data = pd.concat([combined_data_scope_1, combined_data_scope_2, combined_data_scope_3], axis=1)
-
+    if combined_data_list:
+        final_combined_data = pd.concat(combined_data_list, axis=1)
 else:
     # Default historical data if no file is uploaded
     user_data = historical_data[f"{company} Scope 1"]
