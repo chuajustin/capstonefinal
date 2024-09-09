@@ -171,6 +171,7 @@ with tab3:
     # Set the 'Year' column as the new index and drop the original index
     carbon_emissions_table.set_index('Year', inplace=True)
     
-    # Display the updated table
-    st.write(carbon_emissions_table)
+    # Use style.format to remove comma formatting in Year index
+    st.write(carbon_emissions_table.style.format({'Year': "{:.0f}"}))
+
 
