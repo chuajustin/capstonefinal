@@ -93,7 +93,7 @@ uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
 user_data = None
 if uploaded_file is not None:
     try:
-        user_data = pd.read_csv(uploaded_file)
+        user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         st.sidebar.success("File uploaded successfully!")
     except Exception as e:
         st.sidebar.error(f"Error loading file: {e}")
@@ -121,7 +121,7 @@ final_combined_data = pd.concat(combined_data_list, axis=1)
 
 # Add user data to the charts if available
 if user_data is not None:
-    user_data['Year'] = pd.to_datetime(user_data['Year'], format='%d%m%Y')
+    #user_data['Year'] = pd.to_datetime(user_data['Year'])
     user_data.set_index('Year', inplace=True)
     # Rename columns to align with the chart data
     user_data.columns = ['User Scope 1', 'User Scope 2', 'User Scope 3']
