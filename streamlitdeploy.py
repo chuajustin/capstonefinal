@@ -79,7 +79,7 @@ def combine_data(historical, prediction, label, custom_name=None, uploaded_file=
     pred_index = pd.date_range(start=historical.index[-1] + pd.DateOffset(1), periods=len(prediction), freq='Y')
     prediction_series = pd.Series(prediction, index=pred_index, name=f'Prediction {label}')
 
-    if uploaded_file:
+    if uploaded_file is not None:
         # Use custom name for the uploaded file
         original_label = custom_name if custom_name else f'{label} Original'
         combined_data = pd.concat([historical, prediction_series], axis=0)
