@@ -153,7 +153,7 @@ with tab2:
         fig_user = px.line(user_data, 
                            x=user_data.index, 
                            y=user_data.columns, 
-                           title='User Uploaded Data (Scope 1, Scope 2, Scope 3)', 
+                           title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
 
