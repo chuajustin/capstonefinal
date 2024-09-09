@@ -183,6 +183,9 @@ with tab1:
         if combined_data_list:
             final_combined_data = pd.concat(combined_data_list, axis=1)
 
+            # Debugging step: Display final_combined_data columns before plotting
+            st.write("Final combined data columns:", final_combined_data.columns)
+
             # Chart Type Selection
             chart_type = st.selectbox('Select chart type:', ['Line', 'Bar', 'Scatter'], key='chart_type_selection_combined')
 
