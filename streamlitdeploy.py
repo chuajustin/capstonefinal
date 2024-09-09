@@ -172,5 +172,5 @@ with tab3:
     carbon_emissions_table.index.name = 'Year'
     
     # Display the updated table
-st.write(carbon_emissions_table)
+    st.write(carbon_emissions_table)
 
