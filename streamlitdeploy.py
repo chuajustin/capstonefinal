@@ -91,9 +91,10 @@ def combine_data(historical, prediction, label, custom_name=None, uploaded_file=
 
     return combined_data
 
-# Ensure unique column names
+# Function to ensure unique column names by appending suffixes to duplicates
 def make_column_names_unique(df):
-    df.columns = pd.io.parsers.ParserBase({'names': df.columns})._maybe_dedup_names(df.columns)
+    # Add suffixes to duplicate column names automatically
+    df.columns = pd.Series(df.columns).apply(lambda x: x if pd.Series(df.columns).tolist().count(x) == 1 else x + '_' + str(pd.Series(df.columns).tolist().index(x)))
     return df
 
 # Streamlit App
