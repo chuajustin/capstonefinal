@@ -149,7 +149,7 @@ with tab2:
     
     # Add User Data Chart if available
     if user_data is not None:
-        st.subheader('User Uploaded Data (Scope 1, Scope 2, Scope 3)')
+        st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
         fig_user = px.line(user_data, 
                            x=user_data.index, 
                            y=user_data.columns, 
