@@ -123,7 +123,7 @@ final_combined_data = pd.concat(combined_data_list, axis=1)
 # Add user data to the charts if available
 if user_data is not None:
     # Rename columns to align with the chart data
-    user_data.columns = [f'{file_name} 1', f'{file_name} 2', f'{file_name} 3']
+    user_data.columns = [f'{file_name} Scope 1 Original', f'{file_name} 2 Original', f'{file_name} 3 Original']
     final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
 
 # Combined Charts Tab
