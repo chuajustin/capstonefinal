@@ -9,7 +9,7 @@ st.sidebar.markdown("""
 This app uses time series models to make predictions and displays the results automatically.
 Default data is loaded to showcase the forecast based on historical data.
 
-Select a company or year to view forecasts and historical data.
+Select a company to view forecasts and historical data.
 """)
 
 # Define model paths
