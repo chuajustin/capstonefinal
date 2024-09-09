@@ -161,11 +161,15 @@ with tab2:
 with tab3:
     st.subheader(f'Carbon Emissions Data Table for {company}')
     carbon_emissions_table = final_combined_data
-    # carbon_emissions_table.reset_index(inplace=True)
+    
     # Convert the index to datetime
     carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
     
     # Extract the year from the datetime index and assign it back
-    carbon_emissions_table.index = carbon_emissions_table.index.year
-
+    carbon_emissions_table['Year'] = carbon_emissions_table.index.year
+    
+    # Set the 'Year' column as the new index and drop the original index
+    carbon_emissions_table.set_index('Year', inplace=True)
+    
+    # Display the updated table
     st.write(carbon_emissions_table)
