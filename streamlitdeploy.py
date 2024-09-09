@@ -160,4 +160,4 @@ with tab2:
 # Data Table Tab
 with tab3:
     st.subheader(f'Carbon Emissions Data Table for {company}')
-    st.dataframe(final_combined_data)
+    st.dataframe(final_combined_data, width=1000)
