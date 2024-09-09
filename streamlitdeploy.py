@@ -78,7 +78,7 @@ historical_data = load_historical_data(historical_data_paths)
 # Function to combine historical and prediction data
 def combine_data(historical, prediction, label, custom_name=None, uploaded_file=False):
     pred_index = pd.date_range(start=historical.index[-1] + pd.DateOffset(1), periods=len(prediction), freq='Y')
-    prediction_series = pd.Series(prediction, index=pred_index, name=f'Prediction {label}')
+    prediction_series = pd.Series(prediction, index=pred_index, name=f'{label} Prediction')
 
     if uploaded_file:
         original_label = custom_name if custom_name else f'{label} Original'
