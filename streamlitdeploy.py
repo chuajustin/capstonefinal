@@ -50,7 +50,6 @@ historical_data_paths = {
     "Microsoft Scope 3": 'data/microsoft_scope3.csv'
 }
 
-
 # Load models
 def load_models(model_paths):
     models = {}
@@ -92,7 +91,6 @@ def combine_data(historical, prediction, label, custom_name=None, uploaded_file=
 
     return combined_data
 
-
 # Streamlit App
 st.title('''Carbon Emission Predictor
 This app is built base on this five tech companies historical emission data for the past 6 years. 
@@ -101,7 +99,6 @@ This app is built base on this five tech companies historical emission data for 
 
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
-
 
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file for comparison", type=["csv"])
 
@@ -138,7 +135,7 @@ if uploaded_file is not None:
 else:
     # Default historical data if no file is uploaded
     user_data = historical_data[f"{company} Scope 1"]
-    
+
 # Tabs for Combined Charts, Individual Scope Charts, and Emission Stats Table
 tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Emission Stats Table (in metrics tons)"])
 
@@ -157,7 +154,6 @@ for scope in model_names:
 final_combined_data = pd.concat(combined_data_list, axis=1)
 
 # Combined Charts Tab
-# Combined Charts Tab
 with tab1:
     st.subheader('Carbon Emissions Comparison: Scopes 1, 2, and 3 (Original vs Predictions)')
 
@@ -173,116 +169,8 @@ with tab1:
             for scope in model_names:
                 if scope in models:
                     predictions = predict_model(models[scope], fh=30)
-                    # Use the user_data if uploaded, otherwise, use historical data
                     historical_scope_data = user_data if uploaded_file else historical_data[scope]
                     combined_data = combine_data(historical_scope_data, predictions.values.flatten(), scope, custom_name=original_label, uploaded_file=uploaded_file)
                     combined_data_list.append(combined_data)
 
-        if combined_data_list:
-            final_combined_data = pd.concat(combined_data_list, axis=1)
-
-            # Chart Type Selection
-            chart_type = st.selectbox('Select chart type:', ['Line', 'Bar', 'Scatter'], key='chart_type_selection_combined')
-
-            # Chart rendering logic
-            if chart_type == 'Line':
-                fig_combined = px.line(final_combined_data, 
-                                       x=final_combined_data.index, 
-                                       y=final_combined_data.columns, 
-                                       title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                       labels={"index": "Year", "value": "Emissions (in metric tons)"})
-            elif chart_type == 'Bar':
-                fig_combined = px.bar(final_combined_data, 
-                                      x=final_combined_data.index, 
-                                      y=final_combined_data.columns, 
-                                      title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                      labels={"index": "Year", "value": "Emissions (in metric tons)"})
-            elif chart_type == 'Scatter':
-                fig_combined = px.scatter(final_combined_data, 
-                                          x=final_combined_data.index, 
-                                          y=final_combined_data.columns, 
-                                          title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                          labels={"index": "Year", "value": "Emissions (in metric tons)"})
-
-            st.plotly_chart(fig_combined)
-    else:
-        # Default data display when no company selected
-        fig_combined = px.line(final_combined_data, 
-                               x=final_combined_data.index, 
-                               y=final_combined_data.columns, 
-                               title=f'{company} : Scopes 1, 2, and 3 (Original vs Predictions)', 
-                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
-        st.plotly_chart(fig_combined)
-
-
-# Individual Scope Charts Tab
-# Individual Scope Charts Tab
-with tab2:
-    companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indiv')
-
-    if companies_to_compare:
-        st.subheader('Comparison of Selected Companies')
-
-        # Chart Type Selection
-        chart_type = st.selectbox('Select chart type:', ['Line', 'Bar', 'Scatter'], key='chart_type_selection_indiv')
-
-        for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
-            scope_data = pd.DataFrame()
-
-            for comp in companies_to_compare:
-                comp_model_name = f"{comp} {scope}"
-
-                if comp_model_name in models:
-                    predictions = predict_model(models[comp_model_name], fh=30)
-                    historical_scope_data = user_data if uploaded_file else historical_data[comp_model_name]
-                    combined_data = combine_data(historical_scope_data, predictions.values.flatten(), comp_model_name, custom_name=original_label, uploaded_file=uploaded_file)
-                    scope_data = pd.concat([scope_data, combined_data], axis=1)
-
-            if not scope_data.empty:
-                st.subheader(f'{scope} Original', f'{scope} Prediction')
-
-                if chart_type == 'Line':
-                    st.line_chart(scope_data)
-                elif chart_type == 'Bar':
-                    st.bar_chart(scope_data)
-                elif chart_type == 'Scatter':
-                    fig = px.scatter(scope_data)
-                    st.plotly_chart(fig)
-    else:
-        for scope in model_names:
-            st.subheader(f'{company} {scope} (Original vs Prediction)')
-
-            if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
-                # Chart Type Selection
-                chart_type = st.selectbox(f'Select chart type for {scope}:', ['Line', 'Bar', 'Scatter'], key=f'chart_type_selection_{scope}')
-
-                if chart_type == 'Line':
-                    fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                                        x=final_combined_data.index,
-                                        y=[f'{scope} Original', f'{scope} Prediction'],
-                                        title=f'{company} {scope} (Original vs Prediction)',
-                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
-                elif chart_type == 'Bar':
-                    fig_scope = px.bar(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                                       x=final_combined_data.index,
-                                       y=[f'{scope} Original', f'{scope} Prediction'],
-                                       title=f'{company} {scope} (Original vs Prediction)',
-                                       labels={"index": "Year", "value": "Emissions (in metric tons)"})
-                elif chart_type == 'Scatter':
-                    fig_scope = px.scatter(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                                           x=final_combined_data.index,
-                                           y=[f'{scope} Original', f'{scope} Prediction'],
-                                           title=f'{company} {scope} (Original vs Prediction)',
-                                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
-
-                st.plotly_chart(fig_scope)
-
-
-# Emission Stats Table Tab
-with tab3:
-    st.subheader(f'Emission Stats Table for {company} (in metric tons)')
-    st.dataframe(final_combined_data)
-
-# Download as CSV
-csv = final_combined_data.to_csv().encode('utf-8')
-st.download_button(label="Download data as CSV", data=csv, file_name=f'{company}_emissions_comparison.csv', mime='text/csv')
+        if
