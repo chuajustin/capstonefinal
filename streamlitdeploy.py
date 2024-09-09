@@ -166,12 +166,13 @@ with tab3:
     carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
     
     # Extract the year from the datetime index and ensure it's an integer
-    carbon_emissions_table['Year'] = carbon_emissions_table.index.year.astype(int)
+    carbon_emissions_table['Year'] = carbon_emissions_table.index.year.astype(datetime)
     
     # Set the 'Year' column as the new index and drop the original index
     carbon_emissions_table.set_index('Year', inplace=True)
     
-    # Use style.format to remove comma formatting in Year index
-    st.write(carbon_emissions_table.style.format({'Year': "{:.0f}"}))
+    # Display the updated table
+    st.write(carbon_emissions_table)
+
 
 
