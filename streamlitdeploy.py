@@ -139,7 +139,7 @@ with tab1:
 # Individual Scope Charts Tab
 with tab2:
     for scope in model_names:
-        st.subheader(f'{company} {scope} (Original vs Prediction)')
+        st.subheader(f'{scope} (Original vs Prediction)')
         fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
                             x=final_combined_data.index, 
                             y=[f'{scope} Original', f'{scope} Prediction'], 
