@@ -162,6 +162,10 @@ with tab3:
     st.subheader(f'Carbon Emissions Data Table for {company}')
     carbon_emissions_table = final_combined_data
     carbon_emissions_table.reset_index(inplace=True)
+
+    # Extract the year from the datetime index and assign it back
+    carbon_emissions_table.index = carbon_emissions_table.index.year
+
     st.write(carbon_emissions_table)
     #carbon_emissions_table['Year'] = carbon_emissions_table['Year'].dt.year
     #st.dataframe(carbon_emissions_table, width=1000)
