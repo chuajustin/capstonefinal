@@ -84,7 +84,7 @@ def combine_data(historical, prediction, label):
     return combined
 
 # Streamlit App
-st.title('PyCaret Time Series Carbon Emission Forecasts')
+st.title('Time Series Carbon Emission Forecasts')
 
 # File uploader for user CSV input
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
