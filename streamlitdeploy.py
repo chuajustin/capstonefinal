@@ -94,7 +94,7 @@ user_data = None
 if uploaded_file is not None:
     try:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
-        file_name = uploaded_file.name
+        file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
     except Exception as e:
         st.sidebar.error(f"Error loading file: {e}")
