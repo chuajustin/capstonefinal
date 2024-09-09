@@ -100,7 +100,6 @@ This app is built base on this five tech companies historical emission data for 
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 year = st.sidebar.slider('Select year:', min_value=2017, max_value=2050, value=2024)
-
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file for comparison", type=["csv"])
 
 if uploaded_file is not None:
@@ -120,15 +119,15 @@ if uploaded_file is not None:
 
     if model_scope_1 in models:
         predictions_scope_1 = predict_model(models[model_scope_1], fh=fh)
-        combined_data_scope_1 = combine_data(user_data, predictions_scope_1.values.flatten(), model_scope_1, custom_name = original_label)
+        combined_data_scope_1 = combine_data(user_data, predictions_scope_1.values.flatten(), model_scope_1, custom_name = original_label, uploaded_file=True)
 
     if model_scope_2 in models:
         predictions_scope_2 = predict_model(models[model_scope_2], fh=fh)
-        combined_data_scope_2 = combine_data(user_data, predictions_scope_2.values.flatten(), model_scope_2, custom_name = original_label)
+        combined_data_scope_2 = combine_data(user_data, predictions_scope_2.values.flatten(), model_scope_2, custom_name = original_label, uploaded_file=True)
 
     if model_scope_3 in models:
         predictions_scope_3 = predict_model(models[model_scope_3], fh=fh)
-        combined_data_scope_3 = combine_data(user_data, predictions_scope_3.values.flatten(), model_scope_3, custom_name = original_label)
+        combined_data_scope_3 = combine_data(user_data, predictions_scope_3.values.flatten(), model_scope_3, custom_name = original_label, uploaded_file=True)
 
     # Combine all scopes into a single DataFrame for plotting
     final_combined_data = pd.concat([combined_data_scope_1, combined_data_scope_2, combined_data_scope_3], axis=1)
