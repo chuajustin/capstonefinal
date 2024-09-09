@@ -91,6 +91,11 @@ def combine_data(historical, prediction, label, custom_name=None, uploaded_file=
 
     return combined_data
 
+# Ensure unique column names
+def make_column_names_unique(df):
+    df.columns = pd.io.parsers.ParserBase({'names': df.columns})._maybe_dedup_names(df.columns)
+    return df
+
 # Streamlit App
 st.title('''Carbon Emission Predictor
 This app is built base on this five tech companies historical emission data for the past 6 years. 
@@ -153,6 +158,9 @@ for scope in model_names:
 # Combine all scopes into a single DataFrame for plotting
 final_combined_data = pd.concat(combined_data_list, axis=1)
 
+# Ensure unique column names to prevent errors
+final_combined_data = make_column_names_unique(final_combined_data)
+
 # Combined Charts Tab
 with tab1:
     st.subheader('Carbon Emissions Comparison: Scopes 1, 2, and 3 (Original vs Predictions)')
@@ -175,6 +183,7 @@ with tab1:
 
         if combined_data_list:
             final_combined_data = pd.concat(combined_data_list, axis=1)
+            final_combined_data = make_column_names_unique(final_combined_data)
 
             # Melt the DataFrame to long format
             final_combined_data_long = final_combined_data.reset_index().melt(id_vars='index', var_name='Scope', value_name='Emissions')
