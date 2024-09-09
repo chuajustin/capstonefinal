@@ -86,6 +86,18 @@ def combine_data(historical, prediction, label):
 # Streamlit App
 st.title('PyCaret Time Series Carbon Emission Forecasts')
 
+# File uploader for user CSV input
+uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
+
+# Load user-uploaded data if provided
+user_data = None
+if uploaded_file is not None:
+    try:
+        user_data = pd.read_csv(uploaded_file)
+        st.sidebar.success("File uploaded successfully!")
+    except Exception as e:
+        st.sidebar.error(f"Error loading file: {e}")
+
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 year = st.sidebar.slider('Select year:', min_value=2017, max_value=2025, value=2024)
@@ -107,6 +119,14 @@ for scope in model_names:
 # Combine all scopes into a single DataFrame for plotting
 final_combined_data = pd.concat(combined_data_list, axis=1)
 
+# Add user data to the charts if available
+if user_data is not None:
+    user_data['Year'] = pd.to_datetime(user_data['Year'], format='%Y')
+    user_data.set_index('Year', inplace=True)
+    # Rename columns to align with the chart data
+    user_data.columns = ['User Scope 1', 'User Scope 2', 'User Scope 3']
+    final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
+
 # Combined Charts Tab
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
@@ -127,3 +147,13 @@ with tab2:
                             title=f'{company} {scope} (Original vs Prediction)', 
                             labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_scope)
+    
+    # Add User Data Chart if available
+    if user_data is not None:
+        st.subheader('User Uploaded Data (Scope 1, Scope 2, Scope 3)')
+        fig_user = px.line(user_data, 
+                           x=user_data.index, 
+                           y=user_data.columns, 
+                           title='User Uploaded Data (Scope 1, Scope 2, Scope 3)', 
+                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
+        st.plotly_chart(fig_user)
