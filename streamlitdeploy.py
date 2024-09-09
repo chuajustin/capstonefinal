@@ -283,5 +283,3 @@ with tab3:
 # Download as CSV
 csv = final_combined_data.to_csv().encode('utf-8')
 st.download_button(label="Download data as CSV", data=csv, file_name=f'{original_label}_emissions_comparison.csv', mime='text/csv')
-st.sidebar.markdown(f"Original Label: {original_label}")
-st.write(final_combined_data.columns)
