@@ -121,6 +121,7 @@ final_combined_data = pd.concat(combined_data_list, axis=1)
 
 # Add user data to the charts if available
 if user_data is not None:
+    st.write(user_data)
     user_data['Year'] = pd.to_datetime(user_data['Year'])
     user_data.set_index('Year', inplace=True)
     # Rename columns to align with the chart data
