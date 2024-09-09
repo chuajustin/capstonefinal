@@ -126,51 +126,51 @@ if user_data is not None:
     user_data.columns = [f'{file_name} Scope 1 Original', f'{file_name} Scope 2 Original', f'{file_name} Scope 3 Original']
     final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
 
-# Combined Charts Tab
-with tab1:
-    st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
-    fig_combined = px.line(final_combined_data, 
-                           x=final_combined_data.index, 
-                           y=final_combined_data.columns, 
-                           title=f'Compare against {file_name} Original', 
-                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
-    st.plotly_chart(fig_combined)
-
-# Individual Scope Charts Tab
-with tab2:
-    for scope in model_names:
-        st.subheader(f'{scope} (Original vs Prediction)')
-        fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
-                            x=final_combined_data.index, 
-                            y=[f'{scope} Original', f'{scope} Prediction'], 
-                            title=f'{scope} (Original vs Prediction)', 
-                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
-        st.plotly_chart(fig_scope)
+    # Combined Charts Tab
+    with tab1:
+        st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
+        fig_combined = px.line(final_combined_data, 
+                               x=final_combined_data.index, 
+                               y=final_combined_data.columns, 
+                               title=f'Compare against {file_name} Original', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
+        st.plotly_chart(fig_combined)
     
-    # Add User Data Chart if available
-    if user_data is not None:
-        st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
-        fig_user = px.line(user_data, 
-                           x=user_data.index, 
-                           y=user_data.columns, 
-                           title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
-                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
-        st.plotly_chart(fig_user)
-
-# Data Table Tab
-with tab3:
-    st.subheader(f'Carbon Emissions Table including {file_name}')
-    carbon_emissions_table = final_combined_data
+    # Individual Scope Charts Tab
+    with tab2:
+        for scope in model_names:
+            st.subheader(f'{scope} (Original vs Prediction)')
+            fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
+                                x=final_combined_data.index, 
+                                y=[f'{scope} Original', f'{scope} Prediction'], 
+                                title=f'{scope} (Original vs Prediction)', 
+                                labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            st.plotly_chart(fig_scope)
+        
+        # Add User Data Chart if available
+        if user_data is not None:
+            st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
+            fig_user = px.line(user_data, 
+                               x=user_data.index, 
+                               y=user_data.columns, 
+                               title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            st.plotly_chart(fig_user)
     
-    # Convert the index to datetime if it's not already in datetime format
-    carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
-    
-    # Extract the first 4 characters (year) from the index and assign it back
-    carbon_emissions_table.index = carbon_emissions_table.index.strftime('%Y')
-    
-    # Rename the index to 'Year'
-    carbon_emissions_table.index.name = 'Year'
-    
-    # Display the updated table
-    st.write(carbon_emissions_table)
+    # Data Table Tab
+    with tab3:
+        st.subheader(f'Carbon Emissions Table including {file_name}')
+        carbon_emissions_table = final_combined_data
+        
+        # Convert the index to datetime if it's not already in datetime format
+        carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
+        
+        # Extract the first 4 characters (year) from the index and assign it back
+        carbon_emissions_table.index = carbon_emissions_table.index.strftime('%Y')
+        
+        # Rename the index to 'Year'
+        carbon_emissions_table.index.name = 'Year'
+        
+        # Display the updated table
+        st.write(carbon_emissions_table)
 
