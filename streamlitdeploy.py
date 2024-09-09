@@ -103,8 +103,8 @@ if uploaded_file is not None:
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 year = st.sidebar.slider('Select year:', min_value=2017, max_value=2025, value=2024)
 
-# Tabs for Combined Charts and Individual Scope Charts
-tab1, tab2 = st.tabs(["Combined Charts", "Individual Scope Charts"])
+# Tabs for Combined Charts, Individual Scope Charts, and Data Table
+tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Data Table"])
 
 # Get the relevant model names for the selected company
 model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
@@ -156,3 +156,8 @@ with tab2:
                            title='User Uploaded Data (Scope 1, Scope 2, Scope 3)', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
+
+# Data Table Tab
+with tab3:
+    st.subheader(f'Carbon Emissions Data Table for {company}')
+    st.dataframe(final_combined_data)
