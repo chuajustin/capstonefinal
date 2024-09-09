@@ -159,7 +159,7 @@ with tab2:
 
 # Data Table Tab
 with tab3:
-    st.subheader(f'Carbon Emissions Data Table for {company}')
+    st.subheader(f'Carbon Emissions Table including {file_name}')
     carbon_emissions_table = final_combined_data
     
     # Convert the index to datetime if it's not already in datetime format
