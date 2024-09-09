@@ -82,10 +82,10 @@ def combine_data(historical, prediction, label, custom_name=None, uploaded_file=
 
     if uploaded_file:
         original_label = custom_name if custom_name else f'{label} Original'
-        combined_data = pd.concat([historical, prediction_series], axis=0)
+        combined_data = pd.concat([historical, prediction_series], axis=1)
         combined_data.columns = [original_label, f'Prediction {label}']
     else:
-        combined_data = pd.concat([historical, prediction_series], axis=0)
+        combined_data = pd.concat([historical, prediction_series], axis=1)
         combined_data.columns = [f'{label} Original', f'{label} Prediction']
 
     return combined_data
