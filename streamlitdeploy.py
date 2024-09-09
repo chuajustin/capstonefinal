@@ -113,34 +113,22 @@ if uploaded_file is not None:
     user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
 
     # Extract the filename (without extension) for the custom label
-    original_label = uploaded_file.name.split('.')[0]  # Get filename without extension
+    company_label = uploaded_file.name.split('.')[0]  # Get filename without extension
     
     # Assume that the CSV contains the correct format, process the data and generate new predictions
-    model_scope_1 = f"{company} Scope 1"
-    model_scope_2 = f"{company} Scope 2"
-    model_scope_3 = f"{company} Scope 3"
+    model_scope_1 = f"{company_label} Scope 1"
+    model_scope_2 = f"{company_label} Scope 2"
+    model_scope_3 = f"{company_label} Scope 3"
 
     # Define forecasting horizon (e.g., predict the next 30 years)
     fh = 30
 
-    if model_scope_1 in models:
-        predictions_scope_1 = predict_model(models[model_scope_1], fh=fh)
-        combined_data_scope_1 = combine_data(user_data, predictions_scope_1.values.flatten(), model_scope_1, custom_name = original_label)
-
-    if model_scope_2 in models:
-        predictions_scope_2 = predict_model(models[model_scope_2], fh=fh)
-        combined_data_scope_2 = combine_data(user_data, predictions_scope_2.values.flatten(), model_scope_2, custom_name = original_label)
-
-    if model_scope_3 in models:
-        predictions_scope_3 = predict_model(models[model_scope_3], fh=fh)
-        combined_data_scope_3 = combine_data(user_data, predictions_scope_3.values.flatten(), model_scope_3, custom_name = original_label)
+    combined_data_scope_1 = user_data[0,1]
+    combined_data_scope_2 = user_data[0,2]
+    combined_data_scope_3 = user_data[0,3]
 
     # Combine all scopes into a single DataFrame for plotting
     final_combined_data = pd.concat([combined_data_scope_1, combined_data_scope_2, combined_data_scope_3], axis=1)
-
-else:
-    # Default historical data if no file is uploaded
-    user_data = historical_data[f"{company} Scope 1"]
 
 # Tabs for Combined Charts, Individual Scope Charts, and Emission Stats Table
 tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Emission Stats Table (in metrics tons)"])
