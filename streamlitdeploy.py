@@ -88,7 +88,11 @@ def combine_data(historical, prediction, label, custom_name=None, uploaded_file=
         combined_data = pd.concat([historical, prediction_series], axis=1)
         combined_data.columns = [f'{label} Original', f'{label} Prediction']
 
+    # Debug: Display column names for verification
+    st.write(f"Combined data columns for {label}: {combined_data.columns.tolist()}")
+
     return combined_data
+
 
 
 # Streamlit App
