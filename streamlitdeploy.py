@@ -101,7 +101,7 @@ This app is built base on this five tech companies historical emission data for 
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 year = st.sidebar.slider('Select year:', min_value=2017, max_value=2050, value=2024)
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file for comparison", type=["csv"])
-st.sidebar.markdown(f"Original Label: {original_label}")
+
 
 if uploaded_file is not None:
     # Load user-uploaded data
@@ -284,3 +284,4 @@ with tab3:
 # Download as CSV
 csv = final_combined_data.to_csv().encode('utf-8')
 st.download_button(label="Download data as CSV", data=csv, file_name=f'{company}_emissions_comparison.csv', mime='text/csv')
+st.sidebar.markdown(f"Original Label: {original_label}")
