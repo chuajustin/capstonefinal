@@ -156,7 +156,7 @@ for scope in model_names:
 # Combine all scopes into a single DataFrame for plotting
 final_combined_data = pd.concat(combined_data_list, axis=1)
 
-# Combined Charts Tab
+
 # Combined Charts Tab
 with tab1:
     st.subheader('Carbon Emissions Comparison: Scopes 1, 2, and 3 (Original vs Predictions)')
@@ -189,36 +189,34 @@ with tab1:
 
             # Chart rendering logic
             if chart_type == 'Line':
-                fig_combined = px.line(final_combined_data, 
-                                       x=final_combined_data.index, 
-                                       y=final_combined_data.columns, 
-                                       title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                       labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                fig_combined = px.line(final_combined_data,
+                                         x=final_combined_data.index,
+                                         y=final_combined_data.columns,
+                                         title=f'{original_label}: Scopes 1, 2, and 3 (Original vs Predictions)',  # Use original_label in the title
+                                         labels={"index": "Year", "value": "Emissions (in metric tons)"})
             elif chart_type == 'Bar':
-                fig_combined = px.bar(final_combined_data, 
-                                      x=final_combined_data.index, 
-                                      y=final_combined_data.columns, 
-                                      title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                      labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                fig_combined = px.bar(final_combined_data,
+                                        x=final_combined_data.index,
+                                        y=final_combined_data.columns,
+                                        title=f'{original_label}: Scopes 1, 2, and 3 (Original vs Predictions)',  # Use original_label in the title
+                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
             elif chart_type == 'Scatter':
-                fig_combined = px.scatter(final_combined_data, 
-                                          x=final_combined_data.index, 
-                                          y=final_combined_data.columns, 
-                                          title=f'{company}: Scopes 1, 2, and 3 (Original vs Predictions)', 
-                                          labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                fig_combined = px.scatter(final_combined_data,
+                                           x=final_combined_data.index,
+                                           y=final_combined_data.columns,
+                                           title=f'{original_label}: Scopes 1, 2, and 3 (Original vs Predictions)',  # Use original_label in the title
+                                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
 
             st.plotly_chart(fig_combined)
-    else:
-        # Default data display when no company selected
-        fig_combined = px.line(final_combined_data, 
-                               x=final_combined_data.index, 
-                               y=final_combined_data.columns, 
-                               title=f'{company} : Scopes 1, 2, and 3 (Original vs Predictions)', 
-                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
-        st.plotly_chart(fig_combined)
+        else:
+            # Default data display when no company selected
+            fig_combined = px.line(final_combined_data,
+                                     x=final_combined_data.index,
+                                     y=final_combined_data.columns,
+                                     title=f'{original_label}: Scopes 1, 2, and 3 (Original vs Predictions)',  # Use original_label in the title
+                                     labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            st.plotly_chart(fig_combined)
 
-
-# Individual Scope Charts Tab
 # Individual Scope Charts Tab
 with tab2:
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indiv')
@@ -261,33 +259,32 @@ with tab2:
 
                 if chart_type == 'Line':
                     fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                                        x=final_combined_data.index,
-                                        y=[f'{scope} Original', f'{scope} Prediction'],
-                                        title=f'{company} {scope} (Original vs Prediction)',
-                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                                         x=final_combined_data.index,
+                                         y=[f'{scope} Original', f'{scope} Prediction'],
+                                         title=f'{original_label} {scope} (Original vs Prediction)',  # Use original_label in the title
+                                         labels={"index": "Year", "value": "Emissions (in metric tons)"})
                 elif chart_type == 'Bar':
                     fig_scope = px.bar(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                                       x=final_combined_data.index,
-                                       y=[f'{scope} Original', f'{scope} Prediction'],
-                                       title=f'{company} {scope} (Original vs Prediction)',
-                                       labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                                        x=final_combined_data.index,
+                                        y=[f'{scope} Original', f'{scope} Prediction'],
+                                        title=f'{original_label} {scope} (Original vs Prediction)',  # Use original_label in the title
+                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
                 elif chart_type == 'Scatter':
                     fig_scope = px.scatter(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
                                            x=final_combined_data.index,
                                            y=[f'{scope} Original', f'{scope} Prediction'],
-                                           title=f'{company} {scope} (Original vs Prediction)',
+                                           title=f'{original_label} {scope} (Original vs Prediction)',  # Use original_label in the title
                                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
 
                 st.plotly_chart(fig_scope)
 
-
 # Emission Stats Table Tab
 with tab3:
-    st.subheader(f'Emission Stats Table for {company} (in metric tons)')
+    st.subheader(f'Emission Stats Table for {original_label} (in metric tons)')  # Use original_label in the subheader
     st.dataframe(final_combined_data)
 
 # Download as CSV
 csv = final_combined_data.to_csv().encode('utf-8')
-st.download_button(label="Download data as CSV", data=csv, file_name=f'{company}_emissions_comparison.csv', mime='text/csv')
+st.download_button(label="Download data as CSV", data=csv, file_name=f'{original_label}_emissions_comparison.csv', mime='text/csv')
 st.sidebar.markdown(f"Original Label: {original_label}")
 st.write(final_combined_data.columns)
