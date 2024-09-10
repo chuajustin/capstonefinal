@@ -94,6 +94,7 @@ uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
 
 # Load user-uploaded data if provided
 user_data = None
+company = "Meta"
 if uploaded_file is not None:
     try:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
