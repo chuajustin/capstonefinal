@@ -170,47 +170,44 @@ with tab1:
     #Display the chart with annotations
     st.plotly_chart(fig_combined)
 
-#Individual Scope Chart
+# Individual Scope Chart
 with tab2:
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
 
     if companies_to_compare:
         st.subheader('Comparison of Selected Companies')
-    # Loop through each scope (Scope 1, Scope 2, Scope 3)
-    for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
-        # Initialize an empty DataFrame to hold the comparison data for the current scope
-        comparison_data = pd.DataFrame()
+        # Loop through each scope (Scope 1, Scope 2, Scope 3)
+        for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
+            # Initialize an empty DataFrame to hold the comparison data for the current scope
+            comparison_data = pd.DataFrame()
 
-        # Collect data for each selected company for the current scope
-        for comp in companies_to_compare:
-            scope_name = f"{comp} {scope}"
-            if scope_name in models:
-                predictions = predict_model(models[scope_name], fh=30)
-                combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
-                comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
-                comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
+            # Collect data for each selected company for the current scope
+            for comp in companies_to_compare:
+                scope_name = f"{comp} {scope}"
+                if scope_name in models:
+                    try:
+                        # Make predictions
+                        predictions = predict_model(models[scope_name], fh=30)
+                        # Combine historical and predicted data
+                        combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
+                        comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
+                        comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
+                    except Exception as e:
+                        st.error(f"Error with {scope_name}: {e}")
 
-        # Plot the comparison data for the current scope
-        st.subheader(f'{scope} Comparison (Original vs Predictions)')
-        fig_scope_compare = px.line(comparison_data,
-                                    x=comparison_data.index,
-                                    y=comparison_data.columns,
-                                    title=f'{scope} Comparison: Original vs Predictions',
-                                    labels={"index": "Year", "value": "Emissions (in metric tons)"})
+            # Plot the comparison data for the current scope if any data exists
+            if not comparison_data.empty:
+                st.subheader(f'{scope} Comparison (Original vs Predictions)')
+                fig_scope_compare = px.line(comparison_data,
+                                            x=comparison_data.index,
+                                            y=comparison_data.columns,
+                                            title=f'{scope} Comparison: Original vs Predictions',
+                                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                st.plotly_chart(fig_scope_compare)
+            else:
+                st.warning(f"No data available for {scope} comparison.")
 
-        st.plotly_chart(fig_scope_compare)
-        
-    else:
-        for scope in model_names:
-            st.subheader(f'{company} {scope} (Original vs Prediction)')
-
-            if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
-                fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                x=final_combined_data.index,
-                y=[f'{scope} Original', f'{scope} Prediction'],
-                title=f'{company} {scope} (Original vs Prediction)',
-                labels={"index": "Year", "value": "Emissions (in metric tons)"})
     # Add User Data Chart if available
     if user_data is not None:
         st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
@@ -220,6 +217,7 @@ with tab2:
                            title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
+
 
 
 # Data Table Tab
