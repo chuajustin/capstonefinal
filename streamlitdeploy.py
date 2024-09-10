@@ -250,3 +250,6 @@ with tab3:
     st.write(carbon_emissions_table)
     st.write(carbon_emissions_table_indv)
 
+# Download as CSV
+csv = final_combined_data.to_csv().encode('utf-8')
+st.download_button(label="Download data as CSV", data=csv, file_name=f'{company}_emissions_comparison.csv', mime='text/csv')
