@@ -170,12 +170,12 @@ with tab1:
 
             st.plotly_chart(fig_combined)
 
-else: 
-    fig_combined = px.line(final_combined_data, 
-                           x=final_combined_data.index, 
-                           y=final_combined_data.columns, 
-                           title=f'Compare against {file_name} Original', 
-                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
+    else: 
+        fig_combined = px.line(final_combined_data, 
+                               x=final_combined_data.index, 
+                               y=final_combined_data.columns, 
+                               title=f'Compare against {file_name} Original', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
     st.plotly_chart(fig_combined)
 
 # Individual Scope Charts Tab
