@@ -100,7 +100,7 @@ if uploaded_file is not None:
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
         # Use an existing model to predict (assumption: same industry/company)
-        selected_model = models[f'{Scope1} Scope 1',f'{Scope2} Scope 2',f'{Scope3} Scope 3'] 
+        selected_model = models[f'Meta Scope 1',f'Meta Scope 2',f'Meta Scope 3'] 
         predictions_user_data = predict_model(selected_model, fh=len(user_data))
 
         # Combine the predictions with the original data
