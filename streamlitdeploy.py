@@ -89,8 +89,8 @@ def combine_data(historical, prediction, label):
 # Streamlit App
 st.title('Time Series Carbon Emission Forecasts')
 
-# User input for company
-company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
+# File uploader for user CSV input
+uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
 
 # Load user-uploaded data if provided
 user_data = None
@@ -101,6 +101,9 @@ if uploaded_file is not None:
         st.sidebar.success("File uploaded successfully!")
     except Exception as e:
         st.sidebar.error(f"Error loading file: {e}")
+
+# User input for company and year
+company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 
 
 # Tabs for Combined Charts, Individual Scope Charts, and Data Table
