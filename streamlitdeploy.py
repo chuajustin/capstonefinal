@@ -198,6 +198,12 @@ with tab2:
                                     y=comparison_data.columns,
                                     title=f'{scope} Comparison: Original vs Predictions',
                                     labels={"index": "Year", "value": "Emissions (in metric tons)"})
+    else: 
+        fig_scope_compare = px.line(comparison_data,
+                                    x=comparison_data.index,
+                                    y=comparison_data.columns,
+                                    title=f'{scope} Comparison: Original vs Predictions',
+                                    labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_scope_compare)
     
     # Add User Data Chart if available
