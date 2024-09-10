@@ -132,6 +132,16 @@ if user_data is not None:
 # Combined Charts Tab
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
+    # Multi-select widget to choose companies for comparison
+    companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison')
+
+    if companies_to_compare:
+        combined_data_list = []
+
+        for company in companies_to_compare:
+            model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
+
+    
     fig_combined = px.line(final_combined_data, 
                            x=final_combined_data.index, 
                            y=final_combined_data.columns, 
