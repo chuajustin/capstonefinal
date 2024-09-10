@@ -32,35 +32,6 @@ model_paths = {
     "Microsoft Scope 3": 'model/microsoft_scope3_model'
 }
 
-# Load models
-def load_models(model_paths):
-    models = {}
-    for model_name, model_path in model_paths.items():
-        try:
-            models[model_name] = load_model(model_path)
-        except Exception as e:
-            st.error(f"Error loading model '{model_name}': {e}")
-    return models
-
-# Load models
-models = load_models(model_paths)
-
-# User input for company (move this earlier to make sure it's available)
-company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
-
-# File uploader for user CSV input
-uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
-
-# Load user-uploaded data if provided
-user_data = None
-if uploaded_file is not None:
-    try:
-        user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
-        file_name = uploaded_file.name.split('_')[0]
-        st.sidebar.success("File uploaded successfully!")
-    except Exception as e:
-        st.sidebar.error(f"Error loading file: {e}")
-
 # Define historical data paths
 historical_data_paths = {
     "Meta Scope 1": 'data/meta_scope1.csv',
@@ -92,6 +63,37 @@ def load_historical_data(data_paths):
 
 # Load historical data
 historical_data = load_historical_data(historical_data_paths)
+
+
+# Load models
+def load_models(model_paths):
+    models = {}
+    for model_name, model_path in model_paths.items():
+        try:
+            models[model_name] = load_model(model_path)
+        except Exception as e:
+            st.error(f"Error loading model '{model_name}': {e}")
+    return models
+
+# Load models
+models = load_models(model_paths)
+
+# User input for company (move this earlier to make sure it's available)
+company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
+
+# File uploader for user CSV input
+uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
+
+# Load user-uploaded data if provided
+user_data = None
+if uploaded_file is not None:
+    try:
+        user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
+        file_name = uploaded_file.name.split('_')[0]
+        st.sidebar.success("File uploaded successfully!")
+    except Exception as e:
+        st.sidebar.error(f"Error loading file: {e}")
+
 
 # Function to combine historical and prediction data
 def combine_data(historical, prediction, label):
