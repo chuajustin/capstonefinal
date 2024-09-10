@@ -172,6 +172,8 @@ with tab1:
 
 # Individual Scope Charts Tab
 with tab2:
+        # Multi-select widget to choose companies for comparison
+    companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
     for scope in model_names:
         st.subheader(f'{scope} (Original vs Prediction)')
         fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
