@@ -172,8 +172,10 @@ with tab1:
 
 # Individual Scope Charts Tab
 with tab2:
-        # Multi-select widget to choose companies for comparison
+    # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
+
+    # Loop through each scope for the selected company (initially selected company)
     for scope in model_names:
         st.subheader(f'{scope} (Original vs Prediction)')
         fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
@@ -192,6 +194,21 @@ with tab2:
                            title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
+
+    # Loop through selected companies for comparison (other than the main company)
+    for company in companies_to_compare:
+        compare_model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
+        
+        for scope in compare_model_names:
+            if scope in models:
+                st.subheader(f'{company} {scope} (Original vs Prediction)')
+                fig_compare_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']], 
+                                            x=final_combined_data.index, 
+                                            y=[f'{scope} Original', f'{scope} Prediction'], 
+                                            title=f'{company} {scope} (Original vs Prediction)', 
+                                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                st.plotly_chart(fig_compare_scope)
+
 
 # Data Table Tab
 with tab3:
