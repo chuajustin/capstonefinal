@@ -135,7 +135,9 @@ with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison')
-
+    # Ensure the selected company is included in the comparison
+    companies_to_compare.insert(0, company)  # Insert the originally selected company to the comparison list at the beginning
+    
     if companies_to_compare:
         combined_data_list = []
 
