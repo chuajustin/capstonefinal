@@ -250,6 +250,13 @@ with tab2:
                            title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
+        # Plotting the predictions along with original data
+        fig = px.line(combined_user_data, 
+              x=combined_user_data.index, 
+              y=combined_user_data.columns, 
+              title=f'Predictions for {file_name}: Scopes 1, 2, and 3')
+
+        st.plotly_chart(fig)
 
 
 
