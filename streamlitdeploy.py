@@ -99,6 +99,16 @@ if uploaded_file is not None:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
+        # Use an existing model to predict (assumption: same industry/company)
+        selected_model = models[f'{company} Scope 1',f'{company} Scope 2',f'{company} Scope 3'] 
+        predictions_user_data = predict_model(selected_model, fh=len(user_data))
+
+        # Combine the predictions with the original data
+        combined_user_data = combine_data(user_data, predictions_user_data.values.flatten(), file_name)
+        
+        # Show the predictions on the uploaded data
+        st.write(f"Predictions for {file_name}:")
+        st.write(combined_user_data)
     except Exception as e:
         st.sidebar.error(f"Error loading file: {e}")
 
