@@ -103,7 +103,7 @@ if uploaded_file is not None:
             'Scope 2': models.get('Meta Scope 2', None),
             'Scope 3': models.get('Meta Scope 3', None)
         }
-        st.write(selected_models)
+    st.write(selected_models)
 
         # Check if the models are available and make predictions
         combined_user_data = pd.DataFrame()
