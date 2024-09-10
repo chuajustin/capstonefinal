@@ -240,9 +240,12 @@ with tab3:
         
     # Rename the index to 'Year'
     carbon_emissions_table.index.name = 'Year'
-
     
-    # Writing for the individual scopes
+    # Display the updated table
+    st.write(carbon_emissions_table)
+    
+    # Writing for the individual scope
+if not comparison_data.empty:
     carbon_emissions_table_indv = comparison_data
     
     # Convert the index to datetime if it's not already in datetime format
@@ -255,7 +258,6 @@ with tab3:
     carbon_emissions_table_indv.index.name = 'Year'
     
     # Display the updated table
-    st.write(carbon_emissions_table)
     st.write(carbon_emissions_table_indv)
 
 # Download as CSV
