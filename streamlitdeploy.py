@@ -245,17 +245,18 @@ with tab3:
     st.write(carbon_emissions_table)
     
     # Writing for the individual scope
-if not comparison_data.empty:
-    carbon_emissions_table_indv = comparison_data
+    if not comparison_data.empty:
+        
+        carbon_emissions_table_indv = comparison_data
     
-    # Convert the index to datetime if it's not already in datetime format
-    carbon_emissions_table_indv.index = pd.to_datetime(carbon_emissions_table_indv.index)
+        # Convert the index to datetime if it's not already in datetime format
+        carbon_emissions_table_indv.index = pd.to_datetime(carbon_emissions_table_indv.index)
         
-    # Extract the first 4 characters (year) from the index and assign it back
-    carbon_emissions_table_indv.index = carbon_emissions_table_indv.index.strftime('%Y')
+        # Extract the first 4 characters (year) from the index and assign it back
+        carbon_emissions_table_indv.index = carbon_emissions_table_indv.index.strftime('%Y')
         
-    # Rename the index to 'Year'
-    carbon_emissions_table_indv.index.name = 'Year'
+        # Rename the index to 'Year'
+        carbon_emissions_table_indv.index.name = 'Year'
     
     # Display the updated table
     st.write(carbon_emissions_table_indv)
