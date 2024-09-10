@@ -177,18 +177,18 @@ with tab3:
         subheader_text = f'💨 Carbon Emissions Table including {file_name}'
     else:
         subheader_text = '💨 Carbon Emissions Table'
-st.subheader(subheader_text)
+        st.subheader(subheader_text)
 
-        carbon_emissions_table = final_combined_data
+    carbon_emissions_table = final_combined_data
     
-        # Convert the index to datetime if it's not already in datetime format
-        carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
+    # Convert the index to datetime if it's not already in datetime format
+    carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
         
-        # Extract the first 4 characters (year) from the index and assign it back
-        carbon_emissions_table.index = carbon_emissions_table.index.strftime('%Y')
+    # Extract the first 4 characters (year) from the index and assign it back
+    carbon_emissions_table.index = carbon_emissions_table.index.strftime('%Y')
         
-        # Rename the index to 'Year'
-        carbon_emissions_table.index.name = 'Year'
+    # Rename the index to 'Year'
+    carbon_emissions_table.index.name = 'Year'
     
     # Display the updated table
     st.write(carbon_emissions_table)
