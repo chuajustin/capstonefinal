@@ -241,7 +241,7 @@ with tab3:
     carbon_emissions_table_indv.index = pd.to_datetime(carbon_emissions_table_indv.index)
         
     # Extract the first 4 characters (year) from the index and assign it back
-    carbon_emissions_table_indv.index = carbon_emissions_table.index.strftime('%Y')
+    carbon_emissions_table_indv.index = carbon_emissions_table_indv.index.strftime('%Y')
         
     # Rename the index to 'Year'
     carbon_emissions_table_indv.index.name = 'Year'
