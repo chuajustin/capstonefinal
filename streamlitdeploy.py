@@ -94,19 +94,13 @@ uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
 
 # Load user-uploaded data if provided
 user_data = None
-company = "Meta"
 if uploaded_file is not None:
     try:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
-
-        # Use existing models for different scopes (assumption: same industry/company)
-        selected_models = {
-            'Scope 1': models.get(f'Meta Scope 1', None),
-            'Scope 2': models.get(f'Meta Scope 2', None),
-            'Scope 3': models.get(f'Meta Scope 3', None)
-        }
+    except Exception as e:
+        st.sidebar.error(f"Error loading file: {e}")
 
         # Check if the models are available and make predictions
         combined_user_data = pd.DataFrame()
