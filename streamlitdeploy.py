@@ -99,9 +99,9 @@ if uploaded_file is not None:
 
         # Use existing models for different scopes (assumption: same industry/company)
         selected_models = {
-            'Scope 1': models.get(f'Meta Scope 1', None),
-            'Scope 2': models.get(f'Meta Scope 2', None),
-            'Scope 3': models.get(f'Meta Scope 3', None)
+            'Scope 1': models.get('Meta Scope 1', None),
+            'Scope 2': models.get('Meta Scope 2', None),
+            'Scope 3': models.get('Meta Scope 3', None)
         }
 
         # Check if the models are available and make predictions
