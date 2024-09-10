@@ -220,7 +220,7 @@ with tab2:
                                         y=[f'{scope} Original', f'{scope} Prediction'],
                                         title=f'{company} {scope} (Original vs Prediction)',
                                             labels={"index": "Year", "value": "Emissions (in metric tons)"})
-                st.plotly_chart(fig_scope)
+                    st.plotly_chart(fig_scope)
     # Add User Data Chart if available
     if user_data is not None:
         st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
