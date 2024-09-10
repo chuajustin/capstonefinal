@@ -89,9 +89,6 @@ def combine_data(historical, prediction, label):
 # Streamlit App
 st.title('Time Series Carbon Emission Forecasts')
 
-# User input for company
-company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
-
 # File uploader for user CSV input
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
 
@@ -105,21 +102,8 @@ if uploaded_file is not None:
     except Exception as e:
         st.sidebar.error(f"Error loading file: {e}")
 
-        # Check if the models are available and make predictions
-        combined_user_data = pd.DataFrame()
-        for scope, model in selected_models.items():
-            if model is not None:
-                predictions_user_data = predict_model(model, fh=len(user_data))
-                combined_user_data[f'{file_name} {scope} Prediction'] = predictions_user_data.values.flatten()
-
-        # Combine the predictions with the original data
-        combined_user_data = pd.concat([user_data, combined_user_data], axis=1)
-        
-        # Show the predictions on the uploaded data
-        st.write(f"Predictions for {file_name}:")
-        st.write(combined_user_data)
-    except Exception as e:
-        st.sidebar.error(f"Error loading file: {e}")
+# User input for company
+company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 
 
 # Tabs for Combined Charts, Individual Scope Charts, and Data Table
