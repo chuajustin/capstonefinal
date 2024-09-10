@@ -173,10 +173,10 @@ with tab2:
 # Data Table Tab
 with tab3:
 # Create the subheader with conditional inclusion
-if file_name:
-    subheader_text = f'💨 Carbon Emissions Table including {file_name}'
-else:
-    subheader_text = '💨 Carbon Emissions Table'
+    if file_name:
+        subheader_text = f'💨 Carbon Emissions Table including {file_name}'
+    else:
+        subheader_text = '💨 Carbon Emissions Table'
 st.subheader(subheader_text)
 
     carbon_emissions_table = final_combined_data
