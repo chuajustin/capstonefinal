@@ -198,14 +198,19 @@ with tab2:
                                     y=comparison_data.columns,
                                     title=f'{scope} Comparison: Original vs Predictions',
                                     labels={"index": "Year", "value": "Emissions (in metric tons)"})
-    else: 
-        fig_scope_compare = px.line(comparison_data,
-                                    x=comparison_data.index,
-                                    y=comparison_data.columns,
-                                    title=f'{scope} Comparison: Original vs Predictions',
-                                    labels={"index": "Year", "value": "Emissions (in metric tons)"})
+
         st.plotly_chart(fig_scope_compare)
-    
+        
+    else:
+        for scope in model_names:
+            st.subheader(f'{company} {scope} (Original vs Prediction)')
+
+            if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
+                fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
+                x=final_combined_data.index,
+                y=[f'{scope} Original', f'{scope} Prediction'],
+                title=f'{company} {scope} (Original vs Prediction)',
+                labels={"index": "Year", "value": "Emissions (in metric tons)"})
     # Add User Data Chart if available
     if user_data is not None:
         st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
