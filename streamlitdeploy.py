@@ -258,7 +258,9 @@ with tab3:
 
 # Writing for the individual scopes
 if not comparison_data.empty:
-    carbon_emissions_table_indv = comparison_data
+    carbon_emissions_table_indv = final_combined_data
+else:
+    carbon_emission_table_indiv = comparison_data
 
     # Convert the index to datetime if it's not already in datetime format
     carbon_emissions_table_indv.index = pd.to_datetime(carbon_emissions_table_indv.index, errors='coerce')
