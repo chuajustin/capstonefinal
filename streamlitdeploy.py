@@ -166,6 +166,17 @@ with tab1:
 
 
 
+    # Annotating the chart with numeric values
+    for i in range(len(final_combined_data)):
+    fig_combined.add_annotation(
+        x=final_combined_data.index[i],
+        y=final_combined_data.iloc[i].max(),  # Display the max value or any other value you're interested in
+        text=str(final_combined_data.iloc[i].max()),
+        showarrow=True,
+        arrowhead=1
+    )
+
+    #Display the chart with annotations
     st.plotly_chart(fig_combined)
 
 
