@@ -175,6 +175,8 @@ with tab2:
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
 
+    if companies_to_compare:
+        st.subheader('Comparison of Selected Companies')
     # Loop through each scope (Scope 1, Scope 2, Scope 3)
     for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
         # Initialize an empty DataFrame to hold the comparison data for the current scope
