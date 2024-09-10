@@ -99,18 +99,30 @@ if uploaded_file is not None:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
-        # Use an existing model to predict (assumption: same industry/company)
-        selected_model = models[f'Meta Scope 1',f'Meta Scope 2',f'Meta Scope 3'] 
-        predictions_user_data = predict_model(selected_model, fh=len(user_data))
+
+        # Use existing models for different scopes (assumption: same industry/company)
+        selected_models = {
+            'Scope 1': models.get(f'Meta Scope 1', None),
+            'Scope 2': models.get(f'Meta Scope 2', None),
+            'Scope 3': models.get(f'Meta Scope 3', None)
+        }
+
+        # Check if the models are available and make predictions
+        combined_user_data = pd.DataFrame()
+        for scope, model in selected_models.items():
+            if model is not None:
+                predictions_user_data = predict_model(model, fh=len(user_data))
+                combined_user_data[f'{file_name} {scope} Prediction'] = predictions_user_data.values.flatten()
 
         # Combine the predictions with the original data
-        combined_user_data = combine_data(user_data, predictions_user_data.values.flatten(), file_name)
+        combined_user_data = pd.concat([user_data, combined_user_data], axis=1)
         
         # Show the predictions on the uploaded data
         st.write(f"Predictions for {file_name}:")
         st.write(combined_user_data)
     except Exception as e:
         st.sidebar.error(f"Error loading file: {e}")
+
 
 # User input for company
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
