@@ -51,20 +51,6 @@ historical_data_paths = {
     "Microsoft Scope 3": 'data/microsoft_scope3.csv'
 }
 
-# Load historical data
-def load_historical_data(data_paths):
-    data = {}
-    for model_name, path in data_paths.items():
-        try:
-            data[model_name] = pd.read_csv(path, index_col='Year', parse_dates=True)
-        except Exception as e:
-            st.error(f"Error loading historical data for '{model_name}': {e}")
-    return data
-
-# Load historical data
-historical_data = load_historical_data(historical_data_paths)
-
-
 # Load models
 def load_models(model_paths):
     models = {}
@@ -75,11 +61,33 @@ def load_models(model_paths):
             st.error(f"Error loading model '{model_name}': {e}")
     return models
 
-# Load models
-models = load_models(model_paths)
+# Load historical data
+def load_historical_data(data_paths):
+    data = {}
+    for model_name, path in data_paths.items():
+        try:
+            data[model_name] = pd.read_csv(path, index_col='Year', parse_dates=True)
+        except Exception as e:
+            st.error(f"Error loading historical data for '{model_name}': {e}")
+    return data
 
-# User input for company (move this earlier to make sure it's available)
-company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
+# Load models and historical data
+models = load_models(model_paths)
+historical_data = load_historical_data(historical_data_paths)
+
+# Function to combine historical and prediction data
+def combine_data(historical, prediction, label):
+    # Ensure the prediction length matches the forecast horizon
+    pred_index = pd.date_range(start=historical.index[-1] + pd.DateOffset(1), periods=len(prediction), freq='Y')
+    prediction_series = pd.Series(prediction, index=pred_index, name=f'Prediction {label}')
+    
+    # Combine the historical data with predictions
+    combined = pd.concat([historical, prediction_series], axis=0)
+    combined.columns = [f'{label} Original', f'{label} Prediction']
+    return combined
+
+# Streamlit App
+st.title('Time Series Carbon Emission Forecasts')
 
 # File uploader for user CSV input
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
@@ -91,24 +99,20 @@ if uploaded_file is not None:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
-    except Exception as e:
-        st.sidebar.error(f"Error loading file: {e}")
 
 
-# Function to combine historical and prediction data
-def combine_data(historical, prediction, label):
-    pred_index = pd.date_range(start=historical.index[-1] + pd.DateOffset(1), periods=len(prediction), freq='Y')
-    prediction_series = pd.Series(prediction, index=pred_index, name=f'Prediction {label}')
-    
-    # Combine the historical data with predictions
-    combined = pd.concat([historical, prediction_series], axis=0)
-    combined.columns = [f'{label} Original', f'{label} Prediction']
-    return combined
+# User input for company
+company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
+
+
+# Tabs for Combined Charts, Individual Scope Charts, and Data Table
+tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Emission Data Table"])
 
 # Get the relevant model names for the selected company
 model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
 
 combined_data_list = []
+
 for scope in model_names:
     if scope in models:
         predictions = predict_model(models[scope], fh=30)
