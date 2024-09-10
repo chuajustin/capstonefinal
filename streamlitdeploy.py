@@ -168,9 +168,6 @@ with tab1:
 
     st.plotly_chart(fig_combined)
 
-    # Display the numeric values in a table below the chart
-    st.write("Numeric Values of the Data:")
-    st.dataframe(final_combined_data)
 
 # Individual Scope Charts Tab
 with tab2:
