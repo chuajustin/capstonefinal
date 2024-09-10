@@ -99,8 +99,7 @@ if uploaded_file is not None:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
-    except Exception as e:
-        st.sidebar.error(f"Error loading file: {e}")
+
 
 # User input for company
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
