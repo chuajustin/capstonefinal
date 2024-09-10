@@ -177,7 +177,7 @@ with tab3:
         subheader_text = f'💨 Carbon Emissions Table including {file_name}'
     else:
         subheader_text = '💨 Carbon Emissions Table'
-        st.subheader(subheader_text)
+    st.subheader(subheader_text)
 
     carbon_emissions_table = final_combined_data
     
