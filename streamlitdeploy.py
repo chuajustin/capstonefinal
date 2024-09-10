@@ -169,7 +169,8 @@ with tab1:
     #Display the chart with annotations
     st.plotly_chart(fig_combined)
 
-
+#Individual Scope Chart
+with tab2:
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
 
