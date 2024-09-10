@@ -150,6 +150,13 @@ with tab1:
         if combined_data_list:
             final_combined_data = pd.concat(combined_data_list, axis=1)
 
+        # Render a line chart with the combined data
+        fig_combined = px.line(final_combined_data, 
+                               x=final_combined_data.index, 
+                               y=final_combined_data.columns, 
+                               title=f'{company}: Comparing Scopes 1, 2, and 3 with Selected Companies', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
+
     else: 
         fig_combined = px.line(final_combined_data, 
                                x=final_combined_data.index, 
