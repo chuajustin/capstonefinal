@@ -231,7 +231,7 @@ with tab2:
 
     else:
         # If no company is selected for comparison, show the individual company's scope data
-        for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
+        for scope in model_names:
             st.subheader(f'{company} {scope} (Original vs Prediction)')
 
             if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
