@@ -172,41 +172,26 @@ with tab1:
 with tab2:
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
-    # Retrieve the forecast values for 2030 and 2050
-    y_pred = predictions['y_pred']  # Specific predictions for this model
-    
+    y_pred = predictions['y_pred'] # defining the y-pred and retreiving the year value
+
     if companies_to_compare:
         st.subheader('Comparison of Selected Companies')
-
+        
         # Loop through each scope (Scope 1, Scope 2, Scope 3)
         for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
             # Initialize an empty DataFrame to hold the comparison data for the current scope
             comparison_data = pd.DataFrame()
 
-            # Create dictionaries to store forecast values for 2030 and 2050 specific to each company
-            forecast_2030_dict = {}
-            forecast_2050_dict = {}
-
             # Collect data for each selected company for the current scope
             for comp in companies_to_compare:
                 scope_name = f"{comp} {scope}"
-                
-                # Make sure the correct model is being used for the company
                 if scope_name in models:
                     try:
-                        # Make predictions for the current company and scope
-                        model = models[scope_name]  # Ensure model is specific to the company
-                        predictions = predict_model(model, fh=30)  # Forecast for 30 future periods
-                        
-                        # Store the forecast values for 2030 and 2050 for this company
-                        forecast_2030_dict[comp] = y_pred.loc['2030'] if '2030' in y_pred.index else "2030 data not available"
-                        forecast_2050_dict[comp] = y_pred.loc['2050'] if '2050' in y_pred.index else "2050 data not available"
-
-                        # Combine the historical data with the prediction data
+                        # Make predictions
+                        predictions = predict_model(models[scope_name], fh=30)
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
                         comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
-
                     except Exception as e:
                         st.error(f"Error with {scope_name}: {e}")
 
@@ -226,18 +211,44 @@ with tab2:
                                                 labels={"index": "Year", "value": "Emissions (in metric tons)"})
                     st.plotly_chart(fig_scope_compare)
 
-                # In the second column, display the forecast values for 2030 and 2050 for each company
+                # In the second column, display the forecast values for 2030 and 2050
                 with col2:
-                    st.write(f"### {scope} Forecast")
-                    for comp in companies_to_compare:
-                        st.write(f"**{comp}**")
-                        st.write(f"- **2030 Forecast**: {forecast_2030_dict[comp]}")
-                        st.write(f"- **2050 Forecast**: {forecast_2050_dict[comp]}")
-                        st.write("---")  # Line separator between companies' forecasts
+                    try:
+                        forecast_2030 = y_pred.loc['2030'] if '2030' in y_pred else "2030 data not available"
+                        forecast_2050 = y_pred.loc['2050'] if '2050' in y_pred else "2050 data not available"
+                        st.write(f"### {scope} Forecast")
+                        st.write(f"- **2030 Forecast**: {forecast_2030}")
+                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                    except Exception as e:
+                        st.write("Error fetching forecast data:", e)
 
             else:
                 st.warning(f"No data available for {scope} comparison.")
 
+    else:
+        for scope in model_names:
+            st.subheader(f'{company} {scope} (Original vs Prediction)')
+
+            if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
+                # Create two columns: one for the chart, one for the forecast values
+                col1, col2 = st.columns([2, 1])
+
+                # In the first column, display the chart
+                with col1:
+                    fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
+                                        x=final_combined_data.index,
+                                        y=[f'{scope} Original', f'{scope} Prediction'],
+                                        title=f'{company} {scope} (Original vs Prediction)',
+                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                    st.plotly_chart(fig_scope)
+
+                # In the second column, display the forecast values for 2030 and 2050
+                with col2:
+                    forecast_2030 = y_pred.loc['2030'] if '2030' in y_pred else "2030 data not available"
+                    forecast_2050 = y_pred.loc['2050'] if '2050' in y_pred else "2050 data not available"
+                    st.write(f"### {scope} Forecast")
+                    st.write(f"- **2030 Forecast**: {forecast_2030}")
+                    st.write(f"- **2050 Forecast**: {forecast_2050}")
                     
     # Add User Data Chart if available
     if user_data is not None:
