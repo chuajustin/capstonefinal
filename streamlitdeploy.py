@@ -219,8 +219,8 @@ with tab2:
                     try:
 
                         # Retrieve the forecast values for the current scope
-                        forecast_2030 = {scope: predictions.loc['2030', scope] if '2030' in predictions.index and scope in predictions.columns else "2030 data not available" for scope in scopes}
-                        forecast_2050 = {scope: predictions.loc['2050', scope] if '2050' in predictions.index and scope in predictions.columns else "2050 data not available" for scope in scopes}
+                        forecast_2030 = {scope: predictions.loc['2030', scope] if '2030' in predictions.index and scope in predictions.columns else "2030 data not available"}
+                        forecast_2050 = {scope: predictions.loc['2050', scope] if '2050' in predictions.index and scope in predictions.columns else "2050 data not available"}
                         
                         st.write(f"### {scope} Forecast")
                         st.write(f"- **2030 Forecast**: {forecast_2030}")
