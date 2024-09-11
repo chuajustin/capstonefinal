@@ -252,12 +252,9 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
-                        scopes = ['Scope 1', 'Scope 2', 'Scope 3']  # Replace with your actual scope names
-                        
                         # Retrieve the forecast values for the current scope
-                        forecast_2030 = {scope: predictions.loc['2030', scope] if '2030' in predictions.index and scope in predictions.columns else "2030 data not available" for scope in scopes}
-                        forecast_2050 = {scope: predictions.loc['2050', scope] if '2050' in predictions.index and scope in predictions.columns else "2050 data not available" for scope in scopes}
-                        st.write(f"### {scope} Forecast")
+                        forecast_2030 = predictions.loc['2030', scope].values.flatten() if '2030' in predictions.index else "2030 data not available"
+                        forecast_2050 = predictions.loc['2050', scope].values.flatten() if '2050' in predictions.index else "2050 data not available"
                         st.write(f"- **2030 Forecast**: {forecast_2030}")
                         st.write(f"- **2050 Forecast**: {forecast_2050}")
                     
