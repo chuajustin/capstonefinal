@@ -215,8 +215,8 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
-                        forecast_2030 = predictions.loc['2030-12-31 00:00:00'] if '2030-12-31 00:00:00' in comparison_data.index else "2030 data not available"
-                        forecast_2050 = predictions.loc['2050-12-31 00:00:00'] if '2050-12-31 00:00:00' in comparison_data.index else "2050 data not available"
+                        forecast_2030 = y_pred.loc['2030'] if '2030' in comparison_data.index else "2030 data not available"
+                        forecast_2050 = y_pred.loc['2050'] if '2050' in comparison_data.index else "2050 data not available"
                         st.write(f"### {scope} Forecast")
                         st.write(f"- **2030 Forecast**: {forecast_2030}")
                         st.write(f"- **2050 Forecast**: {forecast_2050}")
