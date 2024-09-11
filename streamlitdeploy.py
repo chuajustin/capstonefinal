@@ -249,6 +249,7 @@ with tab2:
                                             y=comparison_data.columns,
                                             title=f'{scope} Comparison: Original vs Predictions',
                                             labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                st.write(fig_scope_compare)
                 st.plotly_chart(fig_scope_compare)
             else:
                 st.warning(f"No data available for {scope} comparison.")
