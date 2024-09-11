@@ -223,8 +223,8 @@ with tab2:
                         forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
                         
                         st.write(f"### {scope} Forecast")
-                        st.write(f"- **2030 Forecast**: {forecast_2030}")
-                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                        st.write(f"- **2030 Forecast**: {scope}{forecast_2030}")
+                        st.write(f"- **2050 Forecast**: {scope}{forecast_2050}")
                     
                     except Exception as e:
                         st.write(f"Error fetching forecast data for {scope}: {e}")
