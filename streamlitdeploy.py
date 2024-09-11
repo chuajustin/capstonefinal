@@ -189,7 +189,8 @@ with tab2:
                         # Make predictions for the current scope
                         predictions = predict_model(models[scope_name], fh=30)
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
-                        
+                        print("Index:", predictions.index)
+                        print("Columns:", predictions.columns)
                         # Store the predictions and original data for comparison
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
                         comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
