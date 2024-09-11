@@ -188,6 +188,7 @@ with tab2:
                     try:
                         # Make predictions
                         predictions = predict_model(models[scope_name], fh=30)
+                        st.write(predictions.head())  # Display the first few rows to understand its structure
                         # Combine historical and predicted data
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
