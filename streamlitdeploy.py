@@ -189,8 +189,6 @@ with tab2:
                         # Make predictions for the current scope
                         predictions = predict_model(models[scope_name], fh=30)
                         st.write(f"Predictions for {scope_name}:")
-                        st.write(predictions.head())  # Debug: Check predictions structure
-
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         
                         # Store the predictions and original data for comparison
@@ -219,8 +217,7 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
-                        # Debug: Print the index to ensure the correct year values are present
-                        st.write(f"Index of predictions: {predictions.index}")
+
 
                         # Retrieve the forecast values for the current scope
                         forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
