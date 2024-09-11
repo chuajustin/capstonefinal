@@ -117,12 +117,12 @@ if uploaded_file is not None:
 # Tabs for Combined Charts, Individual Scope Charts, and Data Table
 tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Emission Data Table"])
 
-# Step 1: Write the selected company's emission goals for 2030 and 2050
+# Step 1: Display the selected company's emission goals for 2030 and 2050
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
-    
+
     # Write emission goals for the selected company
-    st.write(f"{company} Emission Goals:")
+    st.write(f"### {company} Emission Goals:")
     st.write(f"- **2030 Goal**: {emission_goals[company]['2030']}")
     st.write(f"- **2050 Goal**: {emission_goals[company]['2050']}")
 
@@ -153,6 +153,14 @@ with tab1:
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
     st.plotly_chart(fig_combined)
 
+    # Forecast for 2030 and 2050 (Assuming you have forecasted values for these years)
+    forecast_2030 = final_combined_data.loc[2030] if 2030 in final_combined_data.index else "Forecast data not available"
+    forecast_2050 = final_combined_data.loc[2050] if 2050 in final_combined_data.index else "Forecast data not available"
+    
+    st.write(f"### {company} Carbon Emission Forecasts:")
+    st.write(f"- **2030 Forecast**: {forecast_2030}")
+    st.write(f"- **2050 Forecast**: {forecast_2050}")
+    
 # Step 2: Handle comparison between companies
 with tab1:
     # Multi-select widget to choose companies for comparison
@@ -165,18 +173,26 @@ with tab1:
         comparison_data = {
             "Company": [],
             "2030 Goal": [],
-            "2050 Goal": []
+            "2050 Goal": [],
+            "2030 Forecast": [],
+            "2050 Forecast": []
         }
         
         for cmp in companies_to_compare:
             comparison_data["Company"].append(cmp)
             comparison_data["2030 Goal"].append(emission_goals[cmp]["2030"])
             comparison_data["2050 Goal"].append(emission_goals[cmp]["2050"])
+            
+            # Add forecasts (assuming the forecast data is available for these companies)
+            cmp_forecast_2030 = final_combined_data.loc[2030] if 2030 in final_combined_data.index else "Forecast data not available"
+            cmp_forecast_2050 = final_combined_data.loc[2050] if 2050 in final_combined_data.index else "Forecast data not available"
+            comparison_data["2030 Forecast"].append(cmp_forecast_2030)
+            comparison_data["2050 Forecast"].append(cmp_forecast_2050)
         
         # Display comparison table
         comparison_df = pd.DataFrame(comparison_data)
         st.write(comparison_df)
-        
+
         # Add the comparison line charts (similar to above)
         combined_data_list = []
         for cmp in companies_to_compare:
