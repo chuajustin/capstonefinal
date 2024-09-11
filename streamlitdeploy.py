@@ -249,7 +249,16 @@ with tab2:
                     st.write(f"### {scope} Forecast")
                     st.write(f"- **2030 Forecast**: {forecast_2030}")
                     st.write(f"- **2050 Forecast**: {forecast_2050}")
-
+                    
+    # Add User Data Chart if available
+    if user_data is not None:
+        st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
+        fig_user = px.line(user_data, 
+                           x=user_data.index, 
+                           y=user_data.columns, 
+                           title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
+                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
+        st.plotly_chart(fig_user)
 
 # Data Table Tab
 with tab3:
