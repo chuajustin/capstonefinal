@@ -192,6 +192,7 @@ with tab2:
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
                         comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
+                        st.write(predict_mode())
                     except Exception as e:
                         st.error(f"Error with {scope_name}: {e}")
 
