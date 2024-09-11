@@ -198,36 +198,58 @@ with tab2:
             # Plot the comparison data for the current scope if any data exists
             if not comparison_data.empty:
                 st.subheader(f'{scope} Comparison (Original vs Predictions)')
-                fig_scope_compare = px.line(comparison_data,
-                                            x=comparison_data.index,
-                                            y=comparison_data.columns,
-                                            title=f'{scope} Comparison: Original vs Predictions',
-                                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
-                st.plotly_chart(fig_scope_compare)
+
+                # Create two columns: one for the chart, one for the forecast values
+                col1, col2 = st.columns([2, 1])
+
+                # In the first column, display the chart
+                with col1:
+                    fig_scope_compare = px.line(comparison_data,
+                                                x=comparison_data.index,
+                                                y=comparison_data.columns,
+                                                title=f'{scope} Comparison: Original vs Predictions',
+                                                labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                    st.plotly_chart(fig_scope_compare)
+
+                # In the second column, display the forecast values for 2030 and 2050
+                with col2:
+                    try:
+                        forecast_2030 = comparison_data.loc[2030] if 2030 in comparison_data.index else "2030 data not available"
+                        forecast_2050 = comparison_data.loc[2050] if 2050 in comparison_data.index else "2050 data not available"
+                        st.write(f"### {scope} Forecast")
+                        st.write(f"- **2030 Forecast**: {forecast_2030}")
+                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                    except Exception as e:
+                        st.write("Error fetching forecast data:", e)
+
             else:
                 st.warning(f"No data available for {scope} comparison.")
-
 
     else:
         for scope in model_names:
             st.subheader(f'{company} {scope} (Original vs Prediction)')
 
             if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
+                # Create two columns: one for the chart, one for the forecast values
+                col1, col2 = st.columns([2, 1])
+
+                # In the first column, display the chart
+                with col1:
                     fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
                                         x=final_combined_data.index,
                                         y=[f'{scope} Original', f'{scope} Prediction'],
                                         title=f'{company} {scope} (Original vs Prediction)',
-                                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
                     st.plotly_chart(fig_scope)
-    # Add User Data Chart if available
-    if user_data is not None:
-        st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
-        fig_user = px.line(user_data, 
-                           x=user_data.index, 
-                           y=user_data.columns, 
-                           title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
-                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
-        st.plotly_chart(fig_user)
+
+                # In the second column, display the forecast values for 2030 and 2050
+                with col2:
+                    forecast_2030 = final_combined_data.loc[2030] if 2030 in final_combined_data.index else "2030 data not available"
+                    forecast_2050 = final_combined_data.loc[2050] if 2050 in final_combined_data.index else "2050 data not available"
+                    st.write(f"### {scope} Forecast")
+                    st.write(f"- **2030 Forecast**: {forecast_2030}")
+                    st.write(f"- **2050 Forecast**: {forecast_2050}")
+
 
 # Data Table Tab
 with tab3:
