@@ -172,6 +172,7 @@ with tab1:
 with tab2:
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
+    y_pred = predictions['y_pred'] # defining the y-pred and retreiving the year value
 
     if companies_to_compare:
         st.subheader('Comparison of Selected Companies')
@@ -188,7 +189,6 @@ with tab2:
                     try:
                         # Make predictions
                         predictions = predict_model(models[scope_name], fh=30)
-                        y_pred = predictions['y_pred'] # defining the y-pred and retreiving the year value
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
                         comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
