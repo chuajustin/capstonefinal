@@ -217,7 +217,7 @@ with tab2:
                 with col2:
                     try:
                         # Use the correct predictions for the current scope
-                        forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
+                        forecast_2030 = comparison_data.index.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
                         forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
                         st.write(f"### {scope} Forecast")
                         st.write(f"- **2030 Forecast**: {forecast_2030}")
