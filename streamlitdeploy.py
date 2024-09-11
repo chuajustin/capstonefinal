@@ -177,7 +177,8 @@ with tab2:
         st.subheader('Comparison of Selected Companies')
 
         # Loop through each scope (Scope 1, Scope 2, Scope 3)
-        for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
+        scopes = ['Scope 1', 'Scope 2', 'Scope 3']
+        for scope in scopes:
             # Initialize an empty DataFrame to hold the comparison data for the current scope
             comparison_data = pd.DataFrame()
 
