@@ -188,7 +188,6 @@ with tab2:
                     try:
                         # Make predictions for the current scope
                         predictions = predict_model(models[scope_name], fh=30)
-                        st.write(f"Predictions for {scope_name}:")
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         
                         # Store the predictions and original data for comparison
