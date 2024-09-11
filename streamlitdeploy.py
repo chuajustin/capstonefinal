@@ -195,9 +195,6 @@ with tab2:
                     except Exception as e:
                         st.error(f"Error with {scope_name}: {e}")
 
-            # Ensure the index (years) is of integer type, only for tab2
-            comparison_data.index = comparison_data.index.astype(int)
-
             # Plot the comparison data for the current scope if any data exists
             if not comparison_data.empty:
                 st.subheader(f'{scope} Comparison (Original vs Predictions)')
@@ -222,6 +219,7 @@ with tab2:
                         st.write(f"### {scope} Forecast")
                         st.write(f"- **2030 Forecast**: {forecast_2030}")
                         st.write(f"- **2050 Forecast**: {forecast_2050}")
+                        st.write(final_combined_data.index)
                     except Exception as e:
                         st.write("Error fetching forecast data:", e)
 
