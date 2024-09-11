@@ -195,6 +195,9 @@ with tab2:
                     except Exception as e:
                         st.error(f"Error with {scope_name}: {e}")
 
+            # Ensure the index (years) is of integer type, only for tab2
+            comparison_data.index = comparison_data.index.astype(int)
+
             # Plot the comparison data for the current scope if any data exists
             if not comparison_data.empty:
                 st.subheader(f'{scope} Comparison (Original vs Predictions)')
