@@ -172,7 +172,8 @@ with tab1:
 with tab2:
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
-    y_pred = predictions['y_pred'] # defining the y-pred and retrieving the year value
+    # Retrieve the forecast values for 2030 and 2050
+    y_pred = predictions['y_pred']  # Specific predictions for this model
     
     if companies_to_compare:
         st.subheader('Comparison of Selected Companies')
@@ -189,22 +190,22 @@ with tab2:
             # Collect data for each selected company for the current scope
             for comp in companies_to_compare:
                 scope_name = f"{comp} {scope}"
+                
+                # Make sure the correct model is being used for the company
                 if scope_name in models:
                     try:
-                        # Make predictions specific to the current company
-                        predictions = predict_model(models[scope_name], fh=30)
-
+                        # Make predictions for the current company and scope
+                        model = models[scope_name]  # Ensure model is specific to the company
+                        predictions = predict_model(model, fh=30)  # Forecast for 30 future periods
                         
-                        # Combine the data (historical + predictions)
-                        combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
-                        
-                        # Store the original and prediction values for comparison
-                        comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
-                        comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
-
-                        # Store the forecast values for 2030 and 2050 for the current company
+                        # Store the forecast values for 2030 and 2050 for this company
                         forecast_2030_dict[comp] = y_pred.loc['2030'] if '2030' in y_pred.index else "2030 data not available"
                         forecast_2050_dict[comp] = y_pred.loc['2050'] if '2050' in y_pred.index else "2050 data not available"
+
+                        # Combine the historical data with the prediction data
+                        combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
+                        comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
+                        comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
 
                     except Exception as e:
                         st.error(f"Error with {scope_name}: {e}")
