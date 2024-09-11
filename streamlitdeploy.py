@@ -190,6 +190,7 @@ with tab2:
                         predictions = predict_model(models[scope_name], fh=30)
                         st.write(predictions.head())  # Display the first few rows to understand its structure
                         # Combine historical and predicted data
+                        y_pred = predictions['y_pred']
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
                         comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
@@ -215,8 +216,8 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
-                        forecast_2030 = y_pred.loc['2030'] if '2030' in comparison_data.index else "2030 data not available"
-                        forecast_2050 = y_pred.loc['2050'] if '2050' in comparison_data.index else "2050 data not available"
+                        forecast_2030 = y_pred.loc['2030'] if '2030' in y_pred else "2030 data not available"
+                        forecast_2050 = y_pred.loc['2050'] if '2050' in y_pred else "2050 data not available"
                         st.write(f"### {scope} Forecast")
                         st.write(f"- **2030 Forecast**: {forecast_2030}")
                         st.write(f"- **2050 Forecast**: {forecast_2050}")
