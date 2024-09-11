@@ -176,13 +176,13 @@ with tab2:
     
     if companies_to_compare:
         st.subheader('Comparison of Selected Companies')
-        
+
         # Loop through each scope (Scope 1, Scope 2, Scope 3)
         for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
             # Initialize an empty DataFrame to hold the comparison data for the current scope
             comparison_data = pd.DataFrame()
 
-            # Create dictionaries to store forecast values for 2030 and 2050
+            # Create dictionaries to store forecast values for 2030 and 2050 specific to each company
             forecast_2030_dict = {}
             forecast_2050_dict = {}
 
@@ -191,15 +191,20 @@ with tab2:
                 scope_name = f"{comp} {scope}"
                 if scope_name in models:
                     try:
-                        # Make predictions
+                        # Make predictions specific to the current company
                         predictions = predict_model(models[scope_name], fh=30)
+
+                        
+                        # Combine the data (historical + predictions)
                         combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
+                        
+                        # Store the original and prediction values for comparison
                         comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
                         comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
-                        
-                        # Store 2030 and 2050 forecasts in the dictionary
-                        forecast_2030_dict[comp] = y_pred.loc['2030'] if '2030' in y_pred else "2030 data not available"
-                        forecast_2050_dict[comp] = y_pred.loc['2050'] if '2050' in y_pred else "2050 data not available"
+
+                        # Store the forecast values for 2030 and 2050 for the current company
+                        forecast_2030_dict[comp] = y_pred.loc['2030'] if '2030' in y_pred.index else "2030 data not available"
+                        forecast_2050_dict[comp] = y_pred.loc['2050'] if '2050' in y_pred.index else "2050 data not available"
 
                     except Exception as e:
                         st.error(f"Error with {scope_name}: {e}")
@@ -231,6 +236,7 @@ with tab2:
 
             else:
                 st.warning(f"No data available for {scope} comparison.")
+
                     
     # Add User Data Chart if available
     if user_data is not None:
