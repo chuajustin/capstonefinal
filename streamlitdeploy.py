@@ -216,7 +216,7 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
-                        # Extract the predictions for the current scope
+                        # Use the correct predictions for the current scope
                         forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
                         forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
                         st.write(f"### {scope} Forecast")
@@ -248,6 +248,7 @@ with tab2:
 
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
+                    # Fetch the predictions specific to the current scope
                     forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
                     forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
                     st.write(f"### {scope} Forecast")
