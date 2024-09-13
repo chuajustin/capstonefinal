@@ -142,7 +142,7 @@ if user_data is not None:
 
     # Combine all scopes into a single DataFrame for plotting
     #final_combined_data = pd.DataFrame(combined_data_list)
-    #final_combined_data = pd.concat(combined_data_list, axis=1)
+    final_combined_data = pd.concat(combined_data_list, axis=1)
 
 
 # Combined Charts Tab
