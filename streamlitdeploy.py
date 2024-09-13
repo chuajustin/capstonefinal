@@ -138,7 +138,7 @@ if user_data is not None:
     predictions_combined_data_list = pd.Series(predictions_combined_data_list)
     combined_data_list.append(predictions_combined_data_list) 
 
-    st.dataframe(combined_data_list)
+    st.write(combined_data_list[-1])
 
     # Combine all scopes into a single DataFrame for plotting
     #final_combined_data = pd.DataFrame(combined_data_list)
