@@ -168,28 +168,12 @@ if user_data is not None:
     # Combine user uploaded data with the preloaded data of the 5 companies
     final_combined_data = final_combined_data.join(predictions_final_combined_data.iloc[:,1:2])
     
-    # Set pandas option to display floats without scientific notation
-    pd.set_option('display.float_format', '{:,.3f}'.format)
     
-    # 2030 forecast - for user uploaded data
-    forecast_2030_scope1 = str(final_combined_data.iloc[15:16,9:10]).split(" ")[-1]
-    forecast_2030_scope2 = str(final_combined_data.iloc[15:16,10:11]).split(" ")[-1]
-    forecast_2030_scope3 = str(final_combined_data.iloc[15:16,11:12]).split(" ")[-1]
     
-    st.subheader(f"{file_name} 2030 Forecast")
-    st.write(f"Scope 1: {forecast_2030_scope1}")
-    st.write(f"Scope 2: {forecast_2030_scope2}")
-    st.write(f"Scope 3: {forecast_2030_scope3}")
-        
-    # 2050 forecast - for user uploaded data
-    forecast_2050_scope1 = str(final_combined_data.iloc[35:36,9:10]).split(" ")[-1]
-    forecast_2050_scope2 = str(final_combined_data.iloc[35:36,10:11]).split(" ")[-1]
-    forecast_2050_scope3 = str(final_combined_data.iloc[35:36,11:12]).split(" ")[-1]
     
-    st.subheader(f"{file_name} 2050 Forecast")
-    st.write(f"Scope 1: {forecast_2050_scope1}")
-    st.write(f"Scope 2: {forecast_2050_scope2}")
-    st.write(f"Scope 3: {forecast_2050_scope3}")
+    
+    
+
 
 # Combined Charts Tab
 with tab1:
@@ -313,11 +297,16 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
-                        # Retrieve the forecast values for the current scope
-                        forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
-                        forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
-                        #st.write(f"- **2030 Forecast**: {forecast_2030}")
-                        #st.write(f"- **2050 Forecast**: {forecast_2050}")
+
+                         # Set pandas option to display floats without scientific notation
+                        pd.set_option('display.float_format', '{:,.3f}'.format)                       
+                        
+                        forecast_2030 = final_combined_data.loc['2030', f'{scope} Prediction'].values.flatten()[0] if '2030' in predictions.index else "2030 data not available"
+                        forecast_2050 = final_combined_data.loc['2050', f'{scope} Prediction'].values.flatten()[0] if '2050' in predictions.index else "2050 data not available"
+                        
+                        st.write(f"- **2030 Forecast**: {forecast_2030}")
+                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                        
                     
                     except Exception as e:
                         st.write(f"Error fetching forecast data for {scope}: {e}")
@@ -331,15 +320,41 @@ with tab2:
                            title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
+        
+        
+        # Set pandas option to display floats without scientific notation
+        pd.set_option('display.float_format', '{:,.3f}'.format)
+
+        # 2030 forecast - for user uploaded data
+        forecast_2030_scope1 = str(final_combined_data.iloc[15:16,9:10]).split(" ")[-1]
+        forecast_2030_scope2 = str(final_combined_data.iloc[15:16,10:11]).split(" ")[-1]
+        forecast_2030_scope3 = str(final_combined_data.iloc[15:16,11:12]).split(" ")[-1]
+
+        st.subheader(f"{file_name} 2030 Forecast")
+        st.write(f"Scope 1: {forecast_2030_scope1}")
+        st.write(f"Scope 2: {forecast_2030_scope2}")
+        st.write(f"Scope 3: {forecast_2030_scope3}")
+
+        # 2050 forecast - for user uploaded data
+        forecast_2050_scope1 = str(final_combined_data.iloc[35:36,9:10]).split(" ")[-1]
+        forecast_2050_scope2 = str(final_combined_data.iloc[35:36,10:11]).split(" ")[-1]
+        forecast_2050_scope3 = str(final_combined_data.iloc[35:36,11:12]).split(" ")[-1]
+
+        st.subheader(f"{file_name} 2050 Forecast")
+        st.write(f"Scope 1: {forecast_2050_scope1}")
+        st.write(f"Scope 2: {forecast_2050_scope2}")
+        st.write(f"Scope 3: {forecast_2050_scope3}")
+
+        #st.dataframe(final_combined_data.iloc[35:36,9:])
 
 
 # Data Table Tab
 with tab3:
 # Create the subheader with conditional inclusion
     if uploaded_file:
-        subheader_text = f'ðŸ’¨ Carbon Emissions Table including {file_name}'
+        subheader_text = f'Carbon Emissions Table including {file_name}'
     else:
-        subheader_text = 'ðŸ’¨ Carbon Emissions Table'
+        subheader_text = 'Carbon Emissions Table'
     st.subheader(subheader_text)
 
     carbon_emissions_table = final_combined_data
