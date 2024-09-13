@@ -119,7 +119,7 @@ for scope in model_names:
         combined_data_list.append(combined_data)
 
 # Combine all scopes into a single DataFrame for plotting
-#final_combined_data = pd.concat(combined_data_list, axis=1)
+final_combined_data = pd.concat(combined_data_list, axis=1)
 
 # Add user data to the charts if available
 if user_data is not None:
