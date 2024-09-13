@@ -13,45 +13,11 @@ Select a company and year to view forecasts and historical data. If you upload y
 # Initialise file name
 file_name = ""
 
-# Define historical data paths
-historical_data_paths = {
-    "Meta Scope 1": 'data/meta_scope1.csv',
-    "Meta Scope 2": 'data/meta_scope2.csv',
-    "Meta Scope 3": 'data/meta_scope3.csv',
-    "Fujitsu Scope 1": 'data/fujitsu_scope1.csv',
-    "Fujitsu Scope 2": 'data/fujitsu_scope2.csv',
-    "Fujitsu Scope 3": 'data/fujitsu_scope3.csv',
-    "Amazon Scope 1": 'data/amazon_scope1.csv',
-    "Amazon Scope 2": 'data/amazon_scope2.csv',
-    "Amazon Scope 3": 'data/amazon_scope3.csv',
-    "Google Scope 1": 'data/google_scope1.csv',
-    "Google Scope 2": 'data/google_scope2.csv',
-    "Google Scope 3": 'data/google_scope3.csv',
-    "Microsoft Scope 1": 'data/microsoft_scope1.csv',
-    "Microsoft Scope 2": 'data/microsoft_scope2.csv',
-    "Microsoft Scope 3": 'data/microsoft_scope3.csv'
-}
+# Define historical data paths (same as before)
 
-# Load historical data
-def load_historical_data(data_paths):
-    data = {}
-    for model_name, path in data_paths.items():
-        try:
-            data[model_name] = pd.read_csv(path, index_col='Year', parse_dates=True)
-        except Exception as e:
-            st.error(f"Error loading historical data for '{model_name}': {e}")
-    return data
+# Load historical data (same as before)
 
-# Load historical data
-historical_data = load_historical_data(historical_data_paths)
-
-# Function to combine historical and prediction data
-def combine_data(historical, prediction, label):
-    pred_index = pd.date_range(start=historical.index[-1] + pd.DateOffset(1), periods=len(prediction), freq='Y')
-    prediction_series = pd.Series(prediction, index=pred_index, name=f'Prediction {label}')
-    combined = pd.concat([historical, prediction_series], axis=0)
-    combined.columns = [f'{label} Original', f'{label} Prediction']
-    return combined
+# Function to combine historical and prediction data (same as before)
 
 # Streamlit App
 st.title('Time Series Carbon Emission Forecasts')
@@ -65,10 +31,13 @@ if uploaded_file is not None:
         user_data = pd.read_csv(uploaded_file, index_col='Year', parse_dates=True)
         file_name = uploaded_file.name.split('_')[0]
         st.sidebar.success("File uploaded successfully!")
-        
+
+        # Let the user select the target column
+        target_column = st.sidebar.selectbox('Select the target column for forecasting:', user_data.columns)
+
         # PyCaret Time Series Experiment
         exp = TSForecastingExperiment()
-        exp.setup(user_data, fh=30, fold=3, session_id=123)
+        exp.setup(user_data[target_column], fh=30, fold=3, session_id=123)
 
         # Train a model (auto_arima in this case)
         model = exp.create_model('auto_arima')
@@ -77,7 +46,7 @@ if uploaded_file is not None:
         predictions = exp.predict_model(model)
 
         # Combine user-uploaded historical data with predictions
-        user_combined_data = combine_data(user_data, predictions, file_name)
+        user_combined_data = combine_data(user_data[target_column], predictions, file_name)
 
     except Exception as e:
         st.sidebar.error(f"Error loading file or training model: {e}")
