@@ -130,7 +130,7 @@ if user_data is not None:
     # Initialise a list to store predictions of user uploaded scopes
     predictions_combined_data_list = []
 
-    predictions_user_upload = predict_model(models["Meta Scope 1], fh=30)
+    predictions_user_upload = predict_model(models["Meta Scope 1"], fh=30)
     predictions_combined_data = combine_data(historical_data["Meta Scope 1"], predictions.values.flatten(), "User Scope 1)
     predictions_combined_data_list.append(predictions_combined_data)
 
