@@ -44,17 +44,26 @@ if uploaded_file is not None:
             exp = TSForecastingExperiment()
 
             for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
-                # Setup PyCaret for each scope
-                exp.setup(user_data[scope], fh=30, fold=3, session_id=123)
+                # Get the length of the data to determine a suitable forecast horizon
+                data_length = len(user_data[scope])
 
-                # Train a model (auto_arima in this case)
-                model = exp.create_model('auto_arima')
+                # Set the forecast horizon to be smaller than the data length if necessary
+                fh = min(10, data_length // 2)  # Forecast up to 10 periods, but not more than half of the data length
 
-                # Make predictions
-                predictions = exp.predict_model(model)
+                if data_length < 6:
+                    st.error(f"Not enough data points in {scope} for model training. At least 6 data points are required.")
+                else:
+                    # Setup PyCaret for each scope
+                    exp.setup(user_data[scope], fh=fh, fold=3, session_id=123)
 
-                # Combine user-uploaded historical data with predictions for the current scope
-                combined_data_dict[scope] = combine_data(user_data[scope], predictions, f'{file_name} {scope}')
+                    # Train a model (auto_arima in this case)
+                    model = exp.create_model('auto_arima')
+
+                    # Make predictions
+                    predictions = exp.predict_model(model)
+
+                    # Combine user-uploaded historical data with predictions for the current scope
+                    combined_data_dict[scope] = combine_data(user_data[scope], predictions, f'{file_name} {scope}')
 
         else:
             st.sidebar.error("Uploaded file must contain 'Scope 1', 'Scope 2', and 'Scope 3' columns.")
