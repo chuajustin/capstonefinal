@@ -83,7 +83,6 @@ def combine_data(historical, prediction, label):
     
     # Combine the historical data with predictions
     combined = pd.concat([historical, prediction_series], axis=0)
-    combined.columns = [f'{label} Original', f'{label} Prediction']
     return combined
 
 # Function to predict and display results
@@ -134,7 +133,7 @@ model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
 # Perform prediction and get combined data
 final_combined_data = predict_and_display(models, historical_data, model_names, user_data=user_data)
 
-# Combined Charts Tab
+# Combined Charts Tab (Show all scopes)
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
     
@@ -144,14 +143,14 @@ with tab1:
             final_combined_data, 
             x=final_combined_data.index, 
             y=final_combined_data.columns, 
-            title=f'{company} Carbon Emissions Comparison', 
+            title=f'{company} Carbon Emissions Comparison for Scopes 1, 2, and 3', 
             labels={"index": "Year", "value": "Emissions (in metric tons)"}
         )
         st.plotly_chart(fig_combined)
     else:
         st.warning("No data available for the selected company or scopes.")
 
-# Individual Scope Chart
+# Individual Scope Chart (Plot each scope separately)
 with tab2:
     for scope in model_names:
         st.subheader(f'{company} {scope} (Original vs Prediction)')
