@@ -127,29 +127,6 @@ if user_data is not None:
     user_data.columns = [f'{file_name} Scope 1 Original', f'{file_name} Scope 2 Original', f'{file_name} Scope 3 Original']
     final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
 
-    # Initialise a list to store predictions of user uploaded scopes
-    predictions_combined_data_list = []
-
-    predictions_user_upload = predict_model(models["Meta Scope 1"], fh=30)
-    predictions_combined_data = combine_data(historical_data["Meta Scope 1"], predictions_user_upload.values.flatten(), "User Scope 1")
-    predictions_combined_data_list.append(predictions_combined_data)
-
-    st.dataframe(type(final_combined_data))
-
-    
-    # Combine user uploaded data with the preloaded data of the 5 companies
-    #predictions_combined_data_list = pd.Series(predictions_combined_data_list)
-    #combined_data_list.append(predictions_combined_data_list) 
-    predictions_combined_data_list = pd.DataFrame(predictions_combined_data_list)
-
-
-
-    # Combine all scopes into a single DataFrame for plotting
-    #final_combined_data = pd.DataFrame(combined_data_list)
-    predictions_final_combined_data = pd.concat(predictions_combined_data_list, axis=1)
-
-    
-
 
 # Combined Charts Tab
 with tab1:
