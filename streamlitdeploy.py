@@ -131,11 +131,13 @@ if user_data is not None:
     predictions_combined_data_list = []
 
     predictions_user_upload = predict_model(models["Meta Scope 1"], fh=30)
-    predictions_combined_data = combine_data(historical_data["Meta Scope 1"], predictions.values.flatten(), "User Scope 1")
+    predictions_combined_data = combine_data(historical_data["Meta Scope 1"], predictions_user_upload.values.flatten(), "User Scope 1")
     predictions_combined_data_list.append(predictions_combined_data)
 
     # Combine user uploaded data with the preloaded data of the 5 companies
     combined_data_list.append(predictions_combined_data_list) 
+
+    st.write(combined_data_list)
 
     # Combine all scopes into a single DataFrame for plotting
     final_combined_data = pd.concat(combined_data_list, axis=1)
