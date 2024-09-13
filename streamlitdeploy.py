@@ -135,14 +135,14 @@ if user_data is not None:
     predictions_combined_data_list.append(predictions_combined_data)
 
     # Combine user uploaded data with the preloaded data of the 5 companies
-    predictions_combined_data_list = pd.Series(predictions_combined_data_list)
-    combined_data_list.append(predictions_combined_data_list) 
+    #predictions_combined_data_list = pd.Series(predictions_combined_data_list)
+    #combined_data_list.append(predictions_combined_data_list) 
 
-    st.write(combined_data_list[-1])
+    st.write(type(combined_data_list[-1]))
 
     # Combine all scopes into a single DataFrame for plotting
     #final_combined_data = pd.DataFrame(combined_data_list)
-    final_combined_data = pd.concat(combined_data_list, axis=1)
+    final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
 
 
 # Combined Charts Tab
