@@ -97,10 +97,13 @@ def predict_and_display(models, historical_data, model_names, user_data=None):
             combined_data_list.append(combined_data)
 
     # Combine all scopes into a single DataFrame
-    final_combined_data = pd.concat(combined_data_list, axis=1)
+    if combined_data_list:
+        final_combined_data = pd.concat(combined_data_list, axis=1)
+    else:
+        final_combined_data = pd.DataFrame()  # Return an empty DataFrame if no data is available
 
     # If user-uploaded data exists, combine with the original and predicted data
-    if user_data is not None:
+    if user_data is not None and not user_data.empty:
         user_data.columns = [f'{file_name} Scope 1 Original', f'{file_name} Scope 2 Original', f'{file_name} Scope 3 Original']
         final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
 
