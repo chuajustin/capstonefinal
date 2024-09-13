@@ -13,7 +13,24 @@ Select a company and year to view forecasts and historical data. If you upload y
 # Initialise file name
 file_name = ""
 
-# Define model paths and historical data paths (as before)
+# Define historical data paths
+historical_data_paths = {
+    "Meta Scope 1": 'data/meta_scope1.csv',
+    "Meta Scope 2": 'data/meta_scope2.csv',
+    "Meta Scope 3": 'data/meta_scope3.csv',
+    "Fujitsu Scope 1": 'data/fujitsu_scope1.csv',
+    "Fujitsu Scope 2": 'data/fujitsu_scope2.csv',
+    "Fujitsu Scope 3": 'data/fujitsu_scope3.csv',
+    "Amazon Scope 1": 'data/amazon_scope1.csv',
+    "Amazon Scope 2": 'data/amazon_scope2.csv',
+    "Amazon Scope 3": 'data/amazon_scope3.csv',
+    "Google Scope 1": 'data/google_scope1.csv',
+    "Google Scope 2": 'data/google_scope2.csv',
+    "Google Scope 3": 'data/google_scope3.csv',
+    "Microsoft Scope 1": 'data/microsoft_scope1.csv',
+    "Microsoft Scope 2": 'data/microsoft_scope2.csv',
+    "Microsoft Scope 3": 'data/microsoft_scope3.csv'
+}
 
 # Load historical data
 def load_historical_data(data_paths):
@@ -69,8 +86,6 @@ if uploaded_file is not None:
 # Tabs for Combined Charts, Individual Scope Charts, and Data Table
 tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Emission Data Table"])
 
-# Process model names and predictions as before
-
 # Combined Charts Tab
 with tab1:
     st.subheader(f'{file_name} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
@@ -84,7 +99,7 @@ with tab1:
                            labels={"index": "Year", "value": "Emissions (in metric tons)"})
         st.plotly_chart(fig_user)
 
-# Individual Scope Charts Tab (similar logic applies here)
+# Individual Scope Charts Tab
 with tab2:
     st.subheader(f'{file_name} Scope 1, 2, and 3 (Original vs Predictions)')
     if user_data is not None:
