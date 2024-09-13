@@ -169,12 +169,6 @@ if user_data is not None:
     final_combined_data = final_combined_data.join(predictions_final_combined_data.iloc[:,1:2])
     
     
-    
-    
-    
-    
-
-
 # Combined Charts Tab
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
@@ -214,6 +208,112 @@ with tab1:
 
     #Display the chart with annotations
     st.plotly_chart(fig_combined)
+
+  # Set pandas option to display floats without scientific notation
+    pd.set_option('display.float_format', '{:,.3f}'.format)
+
+
+    # Ensure index is a DatetimeIndex
+    if isinstance(final_combined_data.index, pd.PeriodIndex):
+        final_combined_data.index = final_combined_data.index.to_timestamp()
+
+    # Convert the index to year and handle accordingly
+    final_combined_data['Year'] = final_combined_data.index.year
+    # Extract forecasts for 2030 and 2050 dynamically
+    try:
+        # Construct column names dynamically
+        col_scope1 = f"{company} Scope 1 Prediction"
+        col_scope2 = f"{company} Scope 2 Prediction"
+        col_scope3 = f"{company} Scope 3 Prediction"
+
+     
+        # Extract forecasts for 2030
+        companies_forecast_2030_scope1 = str(final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope1].values[0]).split(" ")[-1]
+        companies_forecast_2030_scope2 = str(final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope2].values[0]).split(" ")[-1]
+        companies_forecast_2030_scope3 = str(final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope3].values[0]).split(" ")[-1]
+
+        # Extract forecasts for 2050
+        companies_forecast_2050_scope1 = str(final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope1].values[0]).split(" ")[-1]
+        companies_forecast_2050_scope2 = str(final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope2].values[0]).split(" ")[-1]
+        companies_forecast_2050_scope3 = str(final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope3].values[0]).split(" ")[-1]
+    except KeyError as e:
+        st.error(f"KeyError: {e}")
+        companies_forecast_2030_scope1 = companies_forecast_2030_scope2 = companies_forecast_2030_scope3 = 'Data not available'
+        companies_forecast_2050_scope1 = companies_forecast_2050_scope2 = companies_forecast_2050_scope3 = 'Data not available'
+
+    st.subheader(f"{company} 2030 and 2050 Forecast in metric tonnes")
+    st.write(f"2030 Scope 1: {companies_forecast_2030_scope1}")
+    st.write(f"2030 Scope 2: {companies_forecast_2030_scope2}")
+    st.write(f"2030 Scope 3: {companies_forecast_2030_scope3}")
+    st.write(f"2050 Scope 1: {companies_forecast_2050_scope1}")
+    st.write(f"2050 Scope 2: {companies_forecast_2050_scope2}")
+    st.write(f"2050 Scope 3: {companies_forecast_2050_scope3}")
+
+
+# Comparison case: When users select companies to compare
+    if companies_to_compare:
+        # Initialize dictionary to store forecasts for each company
+        forecast_values = {}
+    
+        for company in companies_to_compare:
+            # Dynamically construct column names for Scope 1, Scope 2, and Scope 3 predictions
+            col_scope1 = f"{company} Scope 1 Prediction"
+            col_scope2 = f"{company} Scope 2 Prediction"
+            col_scope3 = f"{company} Scope 3 Prediction"
+    
+            # Initialize default values for the company
+            forecast_values[company] = {'2030': ['Data not available'] * 3, '2050': ['Data not available'] * 3}
+    
+            # Check if the columns exist in the DataFrame
+            if col_scope1 in final_combined_data.columns and col_scope2 in final_combined_data.columns and col_scope3 in final_combined_data.columns:
+                try:
+                    # Convert columns to numeric (in case there are non-numeric values)
+                    final_combined_data[col_scope1] = pd.to_numeric(final_combined_data[col_scope1], errors='coerce')
+                    final_combined_data[col_scope2] = pd.to_numeric(final_combined_data[col_scope2], errors='coerce')
+                    final_combined_data[col_scope3] = pd.to_numeric(final_combined_data[col_scope3], errors='coerce')
+    
+                    # Extract forecasts for 2030
+                    forecast_2030_scope1 = final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope1].values[0]
+                    forecast_2030_scope2 = final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope2].values[0]
+                    forecast_2030_scope3 = final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope3].values[0]
+    
+                    # Extract forecasts for 2050
+                    forecast_2050_scope1 = final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope1].values[0]
+                    forecast_2050_scope2 = final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope2].values[0]
+                    forecast_2050_scope3 = final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope3].values[0]
+    
+                    # Store the forecasts in the dictionary
+                    forecast_values[company] = {
+                        '2030': [forecast_2030_scope1, forecast_2030_scope2, forecast_2030_scope3],
+                        '2050': [forecast_2050_scope1, forecast_2050_scope2, forecast_2050_scope3]
+                    }
+    
+                except (KeyError, IndexError) as e:
+                    st.error(f"Error retrieving forecast data for {company}: {e}")
+            else:
+                st.error(f"Data for {company} is not available in the dataset.")
+    
+
+        # If exactly two companies are selected, calculate and display percentage differences
+        if len(companies_to_compare) == 2:
+            company_1, company_2 = companies_to_compare
+    
+            st.subheader(f"Percentage Difference between {company_1} and {company_2} (2030 and 2050)")
+    
+            # Calculate percentage difference for each year and scope
+            for year in ['2030', '2050']:
+                for i, scope in enumerate(['Scope 1', 'Scope 2', 'Scope 3']):
+                    value_1 = forecast_values[company_1][year][i]
+                    value_2 = forecast_values[company_2][year][i]
+    
+                    # Check if the data is available for both companies
+                    if 'Data not available' not in [value_1, value_2]:
+                        # Calculate percentage difference if the first value is not zero
+                        percentage_diff = ((value_2 - value_1) / value_1) * 100 if value_1 != 0 else float('inf')
+                        st.write(f"{year} {scope}: {company_1}: {value_1:.3f}, {company_2}: {value_2:.3f}")
+                        st.write(f"Percentage Difference: {percentage_diff:.2f}%")
+                    else:
+                        st.write(f"{year} {scope}: Data not available for comparison.")
 
 # Individual Scope Chart
 with tab2:
