@@ -83,31 +83,8 @@ def combine_data(historical, prediction, label):
     
     # Combine the historical data with predictions
     combined = pd.concat([historical, prediction_series], axis=0)
+    combined.columns = [f'{label} Original', f'{label} Prediction']
     return combined
-
-# Function to predict and display results
-def predict_and_display(models, historical_data, model_names, user_data=None):
-    combined_data_list = []
-
-    for scope in model_names:
-        if scope in models:
-            # Predict for the scope
-            predictions = predict_model(models[scope], fh=30)
-            combined_data = combine_data(historical_data[scope], predictions.values.flatten(), scope)
-            combined_data_list.append(combined_data)
-
-    # Combine all scopes into a single DataFrame
-    if combined_data_list:
-        final_combined_data = pd.concat(combined_data_list, axis=1)
-    else:
-        final_combined_data = pd.DataFrame()  # Return an empty DataFrame if no data is available
-
-    # If user-uploaded data exists, combine with the original and predicted data
-    if user_data is not None and not user_data.empty:
-        user_data.columns = [f'{file_name} Scope 1 Original', f'{file_name} Scope 2 Original', f'{file_name} Scope 3 Original']
-        final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
-
-    return final_combined_data
 
 # Streamlit App
 st.title('Time Series Carbon Emission Forecasts')
@@ -133,56 +110,191 @@ tab1, tab2, tab3 = st.tabs(["Combined Charts", "Individual Scope Charts", "Emiss
 # Get the relevant model names for the selected company
 model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
 
-# Perform prediction and get combined data
-final_combined_data = predict_and_display(models, historical_data, model_names, user_data=user_data)
+combined_data_list = []
 
-# Combined Charts Tab (Show all scopes)
+for scope in model_names:
+    if scope in models:
+        predictions = predict_model(models[scope], fh=30)
+        combined_data = combine_data(historical_data[scope], predictions.values.flatten(), scope)
+        combined_data_list.append(combined_data)
+
+# Combine all scopes into a single DataFrame for plotting
+final_combined_data = pd.concat(combined_data_list, axis=1)
+
+# Add user data to the charts if available
+if user_data is not None:
+    # Rename columns to align with the chart data
+    user_data.columns = [f'{file_name} Scope 1 Original', f'{file_name} Scope 2 Original', f'{file_name} Scope 3 Original']
+    final_combined_data = pd.concat([final_combined_data, user_data], axis=1)
+
+
+# Combined Charts Tab
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
-    
-    # Check if final_combined_data is not empty before plotting
-    if not final_combined_data.empty:
-        fig_combined = px.line(
-            final_combined_data, 
-            x=final_combined_data.index, 
-            y=final_combined_data.columns, 
-            title=f'{company} Carbon Emissions Comparison for Scopes 1, 2, and 3', 
-            labels={"index": "Year", "value": "Emissions (in metric tons)"}
-        )
-        st.plotly_chart(fig_combined)
-    else:
-        st.warning("No data available for the selected company or scopes.")
+    # Multi-select widget to choose companies for comparison
+    companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison')
 
-# Individual Scope Chart (Plot each scope separately)
+    
+    if companies_to_compare:
+        combined_data_list = []
+
+        for company in companies_to_compare:
+            model_names = [f"{company} Scope 1", f"{company} Scope 2", f"{company} Scope 3"]
+            for scope in model_names:
+                if scope in models:
+                    predictions = predict_model(models[scope], fh=30)
+                    combined_data = combine_data(historical_data[scope], predictions.values.flatten(), scope)
+                    combined_data_list.append(combined_data)
+
+        if combined_data_list:
+            final_combined_data = pd.concat(combined_data_list, axis=1)
+
+        # Render a line chart with the combined data
+        fig_combined = px.line(final_combined_data, 
+                               x=final_combined_data.index, 
+                               y=final_combined_data.columns, 
+                               title=f'{company}: Comparing Scopes 1, 2, and 3 with Selected Companies', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
+
+    else: 
+        fig_combined = px.line(final_combined_data, 
+                               x=final_combined_data.index, 
+                               y=final_combined_data.columns, 
+                               title=f'Compare against {file_name} Original', 
+                               labels={"index": "Year", "value": "Emissions (in metric tons)"})
+
+
+
+    #Display the chart with annotations
+    st.plotly_chart(fig_combined)
+
+# Individual Scope Chart
 with tab2:
-    for scope in model_names:
-        st.subheader(f'{company} {scope} (Original vs Prediction)')
-        
-        # Check if the scope data exists in the final_combined_data
-        if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
-            fig_scope = px.line(
-                final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
-                x=final_combined_data.index,
-                y=[f'{scope} Original', f'{scope} Prediction'],
-                title=f'{company} {scope} (Original vs Prediction)',
-                labels={"index": "Year", "value": "Emissions (in metric tons)"}
-            )
-            st.plotly_chart(fig_scope)
-        else:
-            st.warning(f"No data available for {scope}.")
+    # Multi-select widget to choose companies for comparison
+    companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison_indv')
+
+    if companies_to_compare:
+        st.subheader('Comparison of Selected Companies')
+
+        # Loop through each scope (Scope 1, Scope 2, Scope 3)
+        for scope in ['Scope 1', 'Scope 2', 'Scope 3']:
+            # Initialize an empty DataFrame to hold the comparison data for the current scope
+            comparison_data = pd.DataFrame()
+
+            # Collect data for each selected company for the current scope
+            for comp in companies_to_compare:
+                scope_name = f"{comp} {scope}"
+                if scope_name in models:
+                    try:
+                        # Make predictions for the current scope
+                        predictions = predict_model(models[scope_name], fh=30)
+                        combined_data = combine_data(historical_data[scope_name], predictions.values.flatten(), f'{comp} {scope}')
+                        # Store the predictions and original data for comparison
+                        comparison_data[f'{comp} {scope} Original'] = combined_data[f'{comp} {scope} Original']
+                        comparison_data[f'{comp} {scope} Prediction'] = combined_data[f'{comp} {scope} Prediction']
+
+                    except Exception as e:
+                        st.error(f"Error with {scope_name}: {e}")
+
+            # Plot the comparison data for the current scope if any data exists
+            if not comparison_data.empty:
+                st.subheader(f'{scope} Comparison (Original vs Predictions)')
+
+                # Create two columns: one for the chart, one for the forecast values
+                col1, col2 = st.columns([2, 1])
+
+                # In the first column, display the chart
+                with col1:
+                    fig_scope_compare = px.line(comparison_data,
+                                                x=comparison_data.index,
+                                                y=comparison_data.columns,
+                                                title=f'{scope} Comparison: Original vs Predictions',
+                                                labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                    st.plotly_chart(fig_scope_compare)
+
+                # In the second column, display the forecast values for 2030 and 2050
+                with col2:
+                    try:
+                        
+                        # Retrieve the forecast values for the current scope
+                        forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
+                        forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
+                        st.write(f"### {scope} Forecast")
+                        st.write(f"- **2030 Forecast**: {forecast_2030}")
+                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                    
+                    except Exception as e:
+                        st.write(f"Error fetching forecast data for {scope}: {e}")
+
+            else:
+                st.warning(f"No data available for {scope} comparison.")
+
+    else:
+        # If no company is selected for comparison, show the individual company's scope data
+        for scope in model_names:
+            st.subheader(f'{company} {scope} (Original vs Prediction)')
+
+            if f'{scope} Original' in final_combined_data.columns and f'{scope} Prediction' in final_combined_data.columns:
+                # Create two columns: one for the chart, one for the forecast values
+                col1, col2 = st.columns([2, 1])
+
+                # In the first column, display the chart
+                with col1:
+                    fig_scope = px.line(final_combined_data[[f'{scope} Original', f'{scope} Prediction']],
+                                        x=final_combined_data.index,
+                                        y=[f'{scope} Original', f'{scope} Prediction'],
+                                        title=f'{company} {scope} (Original vs Prediction)',
+                                        labels={"index": "Year", "value": "Emissions (in metric tons)"})
+                    st.plotly_chart(fig_scope)
+
+                # In the second column, display the forecast values for 2030 and 2050
+                with col2:
+                    try:
+                        # Retrieve the forecast values for the current scope
+                        forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
+                        forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
+                        st.write(f"- **2030 Forecast**: {forecast_2030}")
+                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                    
+                    except Exception as e:
+                        st.write(f"Error fetching forecast data for {scope}: {e}")
+                    
+    # Add User Data Chart if available
+    if user_data is not None:
+        st.subheader(f'{file_name} (Scope 1, Scope 2, Scope 3)')
+        fig_user = px.line(user_data, 
+                           x=user_data.index, 
+                           y=user_data.columns, 
+                           title=f'{file_name} (Scope 1, Scope 2, Scope 3)', 
+                           labels={"index": "Year", "value": "Emissions (in metric tons)"})
+        st.plotly_chart(fig_user)
+
 
 # Data Table Tab
 with tab3:
-    st.subheader('Carbon Emissions Data Table')
-
-    # Check if final_combined_data is not empty before displaying
-    if not final_combined_data.empty:
-        # Display the updated table
-        st.write(final_combined_data)
+# Create the subheader with conditional inclusion
+    if uploaded_file:
+        subheader_text = f'ðŸ’¨ Carbon Emissions Table including {file_name}'
     else:
-        st.warning("No data available to display.")
+        subheader_text = 'ðŸ’¨ Carbon Emissions Table'
+    st.subheader(subheader_text)
+
+    carbon_emissions_table = final_combined_data
+    
+    # Convert the index to datetime if it's not already in datetime format
+    carbon_emissions_table.index = pd.to_datetime(carbon_emissions_table.index)
+        
+    # Extract the first 4 characters (year) from the index and assign it back
+    carbon_emissions_table.index = carbon_emissions_table.index.strftime('%Y')
+        
+    # Rename the index to 'Year'
+    carbon_emissions_table.index.name = 'Year'
+    
+    # Display the updated table
+    st.write(carbon_emissions_table)
+
+
 
 # Download as CSV
-if not final_combined_data.empty:
-    csv = final_combined_data.to_csv().encode('utf-8')
-    st.download_button(label="Download data as CSV", data=csv, file_name=f'{company}_emissions_comparison.csv', mime='text/csv')
+csv = final_combined_data.to_csv().encode('utf-8')
+st.download_button(label="Download data as CSV", data=csv, file_name=f'{company}_emissions_comparison.csv', mime='text/csv')
