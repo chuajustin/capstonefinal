@@ -166,7 +166,30 @@ if user_data is not None:
     predictions_final_combined_data = pd.concat(predictions_combined_data_list, axis=1)
     
     # Combine user uploaded data with the preloaded data of the 5 companies
-    final_combined_data = final_combined_data.join(predictions_final_combined_data.iloc[:,1:2])       
+    final_combined_data = final_combined_data.join(predictions_final_combined_data.iloc[:,1:2])
+    
+    # Set pandas option to display floats without scientific notation
+    pd.set_option('display.float_format', '{:,.3f}'.format)
+    
+    # 2030 forecast - for user uploaded data
+    forecast_2030_scope1 = str(final_combined_data.iloc[15:16,9:10]).split(" ")[-1]
+    forecast_2030_scope2 = str(final_combined_data.iloc[15:16,10:11]).split(" ")[-1]
+    forecast_2030_scope3 = str(final_combined_data.iloc[15:16,11:12]).split(" ")[-1]
+    
+    st.subheader(f"{file_name} 2030 Forecast")
+    st.write(f"Scope 1: {forecast_2030_scope1}")
+    st.write(f"Scope 2: {forecast_2030_scope2}")
+    st.write(f"Scope 3: {forecast_2030_scope3}")
+        
+    # 2050 forecast - for user uploaded data
+    forecast_2050_scope1 = str(final_combined_data.iloc[35:36,9:10]).split(" ")[-1]
+    forecast_2050_scope2 = str(final_combined_data.iloc[35:36,10:11]).split(" ")[-1]
+    forecast_2050_scope3 = str(final_combined_data.iloc[35:36,11:12]).split(" ")[-1]
+    
+    st.subheader(f"{file_name} 2050 Forecast")
+    st.write(f"Scope 1: {forecast_2050_scope1}")
+    st.write(f"Scope 2: {forecast_2050_scope2}")
+    st.write(f"Scope 3: {forecast_2050_scope3}")
 
 # Combined Charts Tab
 with tab1:
@@ -259,9 +282,9 @@ with tab2:
                         # Retrieve the forecast values for the current scope
                         forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
                         forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
-                        st.write(f"### {scope} Forecast")
-                        st.write(f"- **2030 Forecast**: {forecast_2030}")
-                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                        #st.write(f"### {scope} Forecast")
+                        #st.write(f"- **2030 Forecastwewe**: {final_combined_data.iloc[0:10]}")
+                        #st.write(f"- **2050 Forecast**: {forecast_2050}")
                     
                     except Exception as e:
                         st.write(f"Error fetching forecast data for {scope}: {e}")
@@ -293,8 +316,8 @@ with tab2:
                         # Retrieve the forecast values for the current scope
                         forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
                         forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
-                        st.write(f"- **2030 Forecast**: {forecast_2030}")
-                        st.write(f"- **2050 Forecast**: {forecast_2050}")
+                        #st.write(f"- **2030 Forecast**: {forecast_2030}")
+                        #st.write(f"- **2050 Forecast**: {forecast_2050}")
                     
                     except Exception as e:
                         st.write(f"Error fetching forecast data for {scope}: {e}")
