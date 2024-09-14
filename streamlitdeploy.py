@@ -6,7 +6,7 @@ from pycaret.time_series import load_model, predict_model
 # Sidebar information
 st.sidebar.header('About this Model')
 st.sidebar.markdown("""
-This app uses Time series models to make predictions and displays the results automatically.
+This app uses Time series models to make predictions and displays the results automatically. Historical Data contains Scope 1, 2 and 3 emissions.
 Select a company to view forecasts and historical data.
 """)
 
@@ -87,7 +87,8 @@ def combine_data(historical, prediction, label):
     return combined
 
 # Streamlit App
-st.title('Time Series Carbon Emission Forecasts')
+st.title('''Carbon Cast 💨
+A Time Series Carbon Emission Forecast''')
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 
