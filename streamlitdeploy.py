@@ -7,6 +7,7 @@ from pycaret.time_series import load_model, predict_model
 st.sidebar.header('About this Model')
 st.sidebar.markdown("""
 This app uses Time series models to make predictions and displays the results automatically. Historical Data contains Scope 1, 2 and 3 emissions.
+
 Select a company to view forecasts and historical data.
 """)
 
@@ -94,7 +95,7 @@ company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon"
 
 
 # File uploader for user CSV input
-uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload your CSV file here for comparison and prediction", type=["csv"])
 
 # Load user-uploaded data if provided
 user_data = None
