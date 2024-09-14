@@ -89,7 +89,7 @@ def combine_data(historical, prediction, label):
 
 # Streamlit App
 st.title('''Carbon Cast 💨
-A Time Series Carbon Emission Forecast''')
+A Time Series Carbon Emission Forecast by Justin''')
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
 
