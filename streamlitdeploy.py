@@ -395,10 +395,26 @@ with tab2:
                 # In the second column, display the forecast values for 2030 and 2050
                 with col2:
                     try:
+                        # Retrieve forecast values for 2030 and 2050 for both companies
+                        forecast_2030_company_1 = predictions.loc['2030', f"{company_1} {scope}"] if '2030' in predictions.index else "2030 data not available"
+                        forecast_2050_company_1 = predictions.loc['2050', f"{company_1} {scope}"] if '2050' in predictions.index else "2050 data not available"
                         
-                        # Retrieve the forecast values for the current scope
-                        forecast_2030 = predictions.loc['2030'].values.flatten() if '2030' in predictions.index else "2030 data not available"
-                        forecast_2050 = predictions.loc['2050'].values.flatten() if '2050' in predictions.index else "2050 data not available"
+                        forecast_2030_company_2 = predictions.loc['2030', f"{company_2} {scope}"] if '2030' in predictions.index else "2030 data not available"
+                        forecast_2050_company_2 = predictions.loc['2050', f"{company_2} {scope}"] if '2050' in predictions.index else "2050 data not available"
+                        
+                        # Write out the forecast for the current scope, for both companies
+                        st.write(f"### {scope} Forecast for {company_1} and {company_2}")
+                        
+                        # Forecasts for 2030
+                        st.write(f"- **2030 Forecast**:")
+                        st.write(f"    • {company_1}: {forecast_2030_company_1}")
+                        st.write(f"    • {company_2}: {forecast_2030_company_2}")
+                        
+                        # Forecasts for 2050
+                        st.write(f"- **2050 Forecast**:")
+                        st.write(f"    • {company_1}: {forecast_2050_company_1}")
+                        st.write(f"    • {company_2}: {forecast_2050_company_2}")
+
                         #st.write(f"### {scope} Forecast")
                         #st.write(f"- **2030 Forecastwewe**: {final_combined_data.iloc[0:10]}")
                         #st.write(f"- **2050 Forecast**: {forecast_2050}")
