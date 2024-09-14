@@ -87,10 +87,10 @@ def combine_data(historical, prediction, label):
     return combined
 
 # Streamlit App
-st.title('''Carbon Cast 💨
-A time series carbon emission forecast by Justin'''')
+st.title('Time Series Carbon Emission Forecasts')
 # User input for company and year
 company = st.sidebar.selectbox('Select a company:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], index=0)
+
 
 # File uploader for user CSV input
 uploaded_file = st.sidebar.file_uploader("Upload your CSV file", type=["csv"])
@@ -121,6 +121,7 @@ for scope in model_names:
 
 # Combine all scopes into a single DataFrame for plotting
 final_combined_data = pd.concat(combined_data_list, axis=1)
+
 
 # Add user data to the charts if available
 if user_data is not None:
@@ -169,14 +170,40 @@ if user_data is not None:
     # Combine user uploaded data with the preloaded data of the 5 companies
     final_combined_data = final_combined_data.join(predictions_final_combined_data.iloc[:,1:2])
     
+    # Set pandas option to display floats without scientific notation
+    pd.set_option('display.float_format', '{:,.3f}'.format)
+
+    # 2030 forecast - for user uploaded data
+    forecast_2030_scope1 = str(final_combined_data.iloc[15:16,9:10]).split(" ")[-1]
+    forecast_2030_scope2 = str(final_combined_data.iloc[15:16,10:11]).split(" ")[-1]
+    forecast_2030_scope3 = str(final_combined_data.iloc[15:16,11:12]).split(" ")[-1]
+
+    st.subheader(f"{file_name} 2030 Forecast in metric tonnes")
+    st.write(f"Scope 1: {forecast_2030_scope1}")
+    st.write(f"Scope 2: {forecast_2030_scope2}")
+    st.write(f"Scope 3: {forecast_2030_scope3}")
+
+    # 2050 forecast - for user uploaded data
+    forecast_2050_scope1 = str(final_combined_data.iloc[35:36,9:10]).split(" ")[-1]
+    forecast_2050_scope2 = str(final_combined_data.iloc[35:36,10:11]).split(" ")[-1]
+    forecast_2050_scope3 = str(final_combined_data.iloc[35:36,11:12]).split(" ")[-1]
+
+    st.subheader(f"{file_name} 2050 Forecast in metric tonnes")
+    st.write(f"Scope 1: {forecast_2050_scope1}")
+    st.write(f"Scope 2: {forecast_2050_scope2}")
+    st.write(f"Scope 3: {forecast_2050_scope3}")
+
+        #st.dataframe(final_combined_data.iloc[35:36,9:])  
     
+    
+     
+
 # Combined Charts Tab
 with tab1:
     st.subheader(f'{company} Carbon Emissions: Scopes 1, 2, and 3 (Original vs Predictions)')
+                  # Create two columns: one for the chart, one for the forecast values
     # Multi-select widget to choose companies for comparison
     companies_to_compare = st.multiselect('Compare with:', ["Meta", "Fujitsu", "Amazon", "Google", "Microsoft"], key='company_comparison')
-
-    
     if companies_to_compare:
         combined_data_list = []
 
@@ -210,16 +237,18 @@ with tab1:
     #Display the chart with annotations
     st.plotly_chart(fig_combined)
 
-  # Set pandas option to display floats without scientific notation
+    # Set pandas option to display floats without scientific notation
     pd.set_option('display.float_format', '{:,.3f}'.format)
 
 
     # Ensure index is a DatetimeIndex
     if isinstance(final_combined_data.index, pd.PeriodIndex):
         final_combined_data.index = final_combined_data.index.to_timestamp()
+    
+    # Retrieve the year from the index
+    if isinstance(final_combined_data.index, pd.DatetimeIndex):
+        years = final_combined_data.index.year
 
-    # Convert the index to year and handle accordingly
-    final_combined_data['Year'] = final_combined_data.index.year
     # Extract forecasts for 2030 and 2050 dynamically
     try:
         # Construct column names dynamically
@@ -229,14 +258,14 @@ with tab1:
 
      
         # Extract forecasts for 2030
-        companies_forecast_2030_scope1 = str(final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope1].values[0]).split(" ")[-1]
-        companies_forecast_2030_scope2 = str(final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope2].values[0]).split(" ")[-1]
-        companies_forecast_2030_scope3 = str(final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope3].values[0]).split(" ")[-1]
+        companies_forecast_2030_scope1 = str(final_combined_data.loc[years == 2030, col_scope1].values[0]).split(" ")[-1]
+        companies_forecast_2030_scope2 = str(final_combined_data.loc[years == 2030, col_scope2].values[0]).split(" ")[-1]
+        companies_forecast_2030_scope3 = str(final_combined_data.loc[years == 2030, col_scope3].values[0]).split(" ")[-1]
 
         # Extract forecasts for 2050
-        companies_forecast_2050_scope1 = str(final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope1].values[0]).split(" ")[-1]
-        companies_forecast_2050_scope2 = str(final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope2].values[0]).split(" ")[-1]
-        companies_forecast_2050_scope3 = str(final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope3].values[0]).split(" ")[-1]
+        companies_forecast_2050_scope1 = str(final_combined_data.loc[years == 2050, col_scope1].values[0]).split(" ")[-1]
+        companies_forecast_2050_scope2 = str(final_combined_data.loc[years == 2050, col_scope2].values[0]).split(" ")[-1]
+        companies_forecast_2050_scope3 = str(final_combined_data.loc[years == 2050, col_scope3].values[0]).split(" ")[-1]
     except KeyError as e:
         st.error(f"KeyError: {e}")
         companies_forecast_2030_scope1 = companies_forecast_2030_scope2 = companies_forecast_2030_scope3 = 'Data not available'
@@ -274,14 +303,14 @@ with tab1:
                     final_combined_data[col_scope3] = pd.to_numeric(final_combined_data[col_scope3], errors='coerce')
     
                     # Extract forecasts for 2030
-                    forecast_2030_scope1 = final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope1].values[0]
-                    forecast_2030_scope2 = final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope2].values[0]
-                    forecast_2030_scope3 = final_combined_data.loc[final_combined_data['Year'] == 2030, col_scope3].values[0]
+                    forecast_2030_scope1 = final_combined_data.loc[years == 2030, col_scope1].values[0]
+                    forecast_2030_scope2 = final_combined_data.loc[years == 2030, col_scope2].values[0]
+                    forecast_2030_scope3 = final_combined_data.loc[years == 2030, col_scope3].values[0]
     
                     # Extract forecasts for 2050
-                    forecast_2050_scope1 = final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope1].values[0]
-                    forecast_2050_scope2 = final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope2].values[0]
-                    forecast_2050_scope3 = final_combined_data.loc[final_combined_data['Year'] == 2050, col_scope3].values[0]
+                    forecast_2050_scope1 = final_combined_data.loc[years == 2050, col_scope1].values[0]
+                    forecast_2050_scope2 = final_combined_data.loc[years == 2050, col_scope2].values[0]
+                    forecast_2050_scope3 = final_combined_data.loc[years == 2050, col_scope3].values[0]
     
                     # Store the forecasts in the dictionary
                     forecast_values[company] = {
@@ -316,6 +345,7 @@ with tab1:
                     else:
                         st.write(f"{year} {scope}: Data not available for comparison.")
 
+    
 # Individual Scope Chart
 with tab2:
     # Multi-select widget to choose companies for comparison
@@ -471,7 +501,6 @@ with tab3:
     
     # Display the updated table
     st.write(carbon_emissions_table)
-
 
 
 # Download as CSV
