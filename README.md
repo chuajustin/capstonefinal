@@ -1,4 +1,4 @@
-# Carbon Cast 💨 
+# Carbon Cast - A Carbon Emission Predictor 💨 
 
 ## Introduction 
 By Justin:
