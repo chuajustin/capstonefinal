@@ -1,5 +1,5 @@
 # Carbon Cast 💨 
 
-1231ougtguhpehg2341
+This project uses 6 years of historical data to predict forecast values
 
   ## Introduction 
