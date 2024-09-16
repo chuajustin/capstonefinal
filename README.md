@@ -11,6 +11,7 @@ This project uses 6 years of historical data from (Scope 1, Scope 2 and Scope 3)
 This projects uses Scope 1, 2 and 3 carbon missions downloaded from the sustainability reports from the respective companies (Meta, Google, Amazon, Fujitsu, Microsoft). 
 
 ## Streamlit Demo
-<h2>Demo is over <a href = "https://carbon-cast.streamlit.app/">here</a></h2>
+
+<h2>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h2>
 <img src="carboncast.jpg" alt="Image Description"></img>
 
