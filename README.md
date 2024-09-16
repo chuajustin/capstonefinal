@@ -16,5 +16,5 @@ This projects uses Scope 1, 2 and 3 carbon missions downloaded from the sustaina
 ## Streamlit Demo
 
 <h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
-<img src="carboncast.jpg" alt="Image Description"></img>
+<img src="images/carboncast.jpg" alt="Image Description"></img>
 
