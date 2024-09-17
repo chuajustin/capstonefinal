@@ -19,14 +19,15 @@ This projects uses Scope 1, 2 and 3 carbon missions downloaded from the sustaina
 <img src="images/carboncast.jpg" alt="Image Description"></img>
 
 
-## Limitations
+## Limitations and Future Works
 
 Currently, our model is trained on 6 years of historical data for Scope 1, 2 and 3 carbon emissions. For the model to have more accurate prediction, we would require a minimum of 10-20 years of historical data to forecast accurarely into 2050.
 
 Users that upload their csv data are now being trained on the existing model, to forecast the output. However, if the user csv data are trained based off their own data, the forecasted values will be more accurate and precise.
 
+I would like to incorporate carbon tax, weather & climate data, and real-time emission trends to develop a more accurate and actionable climate change mitigation strategy, enabling informed decision-making and effective policy implementation.
 
 ## Conclusion
 
-This project successfully delivers a user-friendly streamlit application for forecasting data up to 2050 which is the main goal for many companies and countries around the world. They are also able to input their data, users can gain valuable insights into potential future trends and values. The application offers flexibility by allowing users to upload their own CSV files for customized analysis. Additionally, the ability to download forecasted results empowers users to conduct further exploration and integrate the data into their workflows.
+Despite some limitation, this project serves as a proof-of-concept of its ability to forecast emission values. Addressing its limitation and incorporate future works will defintely bring the application to the next level and the world will defintely need a carbon-emission predictor like mine.
 
