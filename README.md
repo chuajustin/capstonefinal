@@ -9,7 +9,11 @@ This project uses 6 years of historical data from (Scope 1, Scope 2 and Scope 3)
 
 ## About this Data
 
-This projects uses Scope 1, 2 and 3 carbon missions downloaded from the sustainability reports from the respective companies (Meta, Google, Amazon, Fujitsu, Microsoft). 
+This project uses Scope 1, 2 and 3 carbon missions downloaded from the sustainability reports from the respective companies (Meta, Google, Amazon, Fujitsu, Microsoft). 
+
+## Modelling
+
+This project has a MAPE score of < 0.3 with an proportionate of 10 out of 15 models. 
 
 </br>
 
