@@ -13,7 +13,7 @@ This project uses Scope 1, 2 and 3 carbon missions downloaded from the sustainab
 
 ## Modelling
 
-This project has a MAPE score of < 0.3 with an proportionate of 10 out of 15 models. 
+Train data used was the historical data of the five different companies with each of their Scopes - 1, 2 and 3. With the lack of dataset, only 6 years of data was used to trained. The modelling yield different models as the top performing one, therefore i had to use the MAPE in referincing the overall score of the data. With 10 out of 15 models with < 0.3, the data yield a accuracy of 80% score as the top performing model with a run time of 1.01s.
 
 </br>
 
