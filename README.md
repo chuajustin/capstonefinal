@@ -20,14 +20,7 @@ The training dataset consists of historical data from five companies across thei
 ## Streamlit Demo
 
 <h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
-[![Watch the video](https://raw.githubusercontent.com/yourusername/yourrepository/main/assets/thumbnail.jpg)](https://github.com/chuajustin/carboncast/raw/refs/heads/main/images/IMG_8398_480p.mp4)
-
-<video width="320" height="240" autoplay controls>
-    <source src="https://github.com/chuajustin/carboncast/raw/main/images/IMG_8398_480p.mp4" type="video/mp4">
-    <source src="https://github.com/chuajustin/carboncast/raw/main/images/IMG_8398_480p.mov" type="video/quicktime">
-    Your browser does not support the video tag.
-</video>
-
+[![Watch the video](https://github.com/chuajustin/carboncast/raw/refs/heads/main/images/IMG_8398_480p.mp4)]
 
 
 
