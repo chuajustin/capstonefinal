@@ -38,4 +38,4 @@ I would like to incorporate carbon tax, weather & climate data, and real-time em
 
 ## Conclusion
 
-Despite some limitation, this project serves as a proof-of-concept of its ability to forecast emission values. Addressing its limitation and incorporate future works will defintely bring the application to the next level and the world will defintely need a carbon-emission predictor like mine.
+Despite its limitations, this project demonstrates the potential to forecast emission values. Addressing these limitations and incorporating future enhancements will elevate the application’s impact, fulfilling a crucial need for accurate carbon emission predictions.
