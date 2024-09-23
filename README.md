@@ -23,6 +23,7 @@ Train data used was the historical data of the five different companies with eac
 [![Watch the video](https://raw.githubusercontent.com/chuajustin/carboncast/main/images/carboncast.jpg)](https://raw.githubusercontent.com/chuajustin/carboncast/main/images/IMG_8398_480p.MOV)
 
 
+
 ## Limitations and Future Works
 
 Currently, our model is trained on 6 years of historical data for Scope 1, 2 and 3 carbon emissions. For the model to have more accurate prediction, we would require a minimum of 10-20 years of historical data to forecast accurarely into 2050.
