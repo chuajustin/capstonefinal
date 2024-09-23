@@ -20,7 +20,7 @@ Train data used was the historical data of the five different companies with eac
 ## Streamlit Demo
 
 <h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
-<img src="images/carboncast.jpg" alt="Image Description"></img>
+[![Watch the video](https://raw.githubusercontent.com/chuajustin/carboncast/main/images/carboncast.jpg)](https://raw.githubusercontent.com/chuajustin/carboncast/main/images/IMG_8398_480p.MOV)
 
 
 ## Limitations and Future Works
