@@ -17,14 +17,21 @@ Train data used was the historical data of the five different companies with eac
 
 </br>
 
-## Streamlit Demo
-
-<h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
-<video width="320" height="240" autoplay controls>
-    <source src="images/IMG_8398_480p.mp4" type="video/mp4">
-    <source src="images/IMG_8398_480p.mov" type="video/quicktime">
-    Your browser does not support the video tag.
-</video>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Demo</title>
+</head>
+<body>
+    <h3>Demo can be found over <a href="https://carbon-cast.streamlit.app/">here</a></h3>
+    <video width="320" height="240" autoplay controls>
+        <source src="images/IMG_8398_480p.mp4" type="video/mp4">
+        <source src="images/IMG_8398_480p.mov" type="video/quicktime">
+        Your browser does not support the video tag.
+    </video>
+</body>
+</html>
 
 
 
