@@ -17,21 +17,14 @@ Train data used was the historical data of the five different companies with eac
 
 </br>
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Demo</title>
-</head>
-<body>
-    <h3>Demo can be found over <a href="https://carbon-cast.streamlit.app/">here</a></h3>
-    <video width="320" height="240" autoplay controls>
-        <source src="images/IMG_8398_480p.mp4" type="video/mp4">
-        <source src="images/IMG_8398_480p.mov" type="video/quicktime">
-        Your browser does not support the video tag.
-    </video>
-</body>
-</html>
+## Streamlit Demo
+
+<h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
+<video width="320" height="240" autoplay controls>
+    <source src="images/IMG_8398_480p.mp4" type="video/mp4">
+    <source src="images/IMG_8398_480p.mov" type="video/quicktime">
+    Your browser does not support the video tag.
+</video>
 
 
 
@@ -46,4 +39,3 @@ I would like to incorporate carbon tax, weather & climate data, and real-time em
 ## Conclusion
 
 Despite some limitation, this project serves as a proof-of-concept of its ability to forecast emission values. Addressing its limitation and incorporate future works will defintely bring the application to the next level and the world will defintely need a carbon-emission predictor like mine.
-
