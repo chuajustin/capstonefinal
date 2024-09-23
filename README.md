@@ -21,9 +21,6 @@ The training dataset consists of historical data from five companies across thei
 
 <h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
 
-## Video Demo
-
-For a video demonstration, click [here](https://chuajustin.github.io/carboncast/index.html).
 
 
 ## Limitations and Future Works
