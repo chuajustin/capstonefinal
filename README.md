@@ -21,7 +21,7 @@ Train data used was the historical data of the five different companies with eac
 
 <h3>Demo is can be found over <a href = "https://carbon-cast.streamlit.app/">here</a></h3>
 <video width="320" height="240" autoplay>
-<source src="images/IMG_8398_480p.mov" type="video/mov">
+<source src="images/IMG_8398_480p.mp4" type="video/mp4">
 </video>
 
 
